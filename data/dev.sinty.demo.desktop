@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Singularity Demo
+Comment=libsingularity widget showcase
+Exec=singularity-demo
+Icon=dev.sinty.demo
+Terminal=false
+Type=Application
+Categories=Development;
+StartupWMClass=singularity-demo
