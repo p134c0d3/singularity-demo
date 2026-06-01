@@ -5,8 +5,9 @@ project('singularity-demo', ['vala', 'c'],
 
 gnome = import('gnome')
 
-gtk_dep = dependency('gtk4')
-gee_dep = dependency('gee-0.8')
+gtk_dep    = dependency('gtk4')
+gee_dep    = dependency('gee-0.8')
+secret_dep = dependency('libsecret-1')
 
 libsingularity_dep = dependency('singularity-1.0',
   fallback: ['libsingularity', 'libsingularity_dep']
@@ -31,7 +32,7 @@ sources = files(
 
 executable('singularity-demo',
   sources + [resources],
-  dependencies: [gtk_dep, gee_dep, libsingularity_dep],
+  dependencies: [gtk_dep, gee_dep, secret_dep, libsingularity_dep],
   install: true
 )
 

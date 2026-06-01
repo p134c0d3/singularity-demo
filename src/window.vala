@@ -19,25 +19,19 @@ namespace Singularity.Apps {
             Object(application: app);
             set_title("libsingularity Demo");
             set_default_size(1000, 680);
-            toolbar.is_static = false;
 
-            // ── Root split layout ──────────────────────────────────────────
             var root = new Box(Orientation.HORIZONTAL, 0);
 
-            // Sidebar spacer at top so rows aren't under the floating toolbar
             var sidebar = new AppSidebar(220);
-            sidebar.box.append(new ToolbarSpacer());
             nav_list = new ListBox();
             nav_list.selection_mode = SelectionMode.SINGLE;
             nav_list.add_css_class("navigation-sidebar");
             nav_list.vexpand = true;
             sidebar.box.append(nav_list);
 
-            // Content area
             var content_area = new Box(Orientation.VERTICAL, 0);
             content_area.hexpand = true;
             content_area.vexpand = true;
-            content_area.append(new ToolbarSpacer());
             content_stack = new Stack();
             content_stack.transition_type = StackTransitionType.CROSSFADE;
             content_stack.hexpand = true;
@@ -45,7 +39,6 @@ namespace Singularity.Apps {
             content_area.append(content_stack);
 
             var separator = new Separator(Orientation.VERTICAL);
-
             root.append(sidebar);
             root.append(separator);
             root.append(content_area);
@@ -70,6 +63,16 @@ namespace Singularity.Apps {
             add_group("Calendar Views",    "x-office-calendar-symbolic",         build_calendar);
             add_group("Toolbar",           "insert-object-symbolic",             build_toolbar_demo);
             add_group("Window",            "window-new-symbolic",                build_window_info);
+            add_group("Keyring Test",      "dialog-password-symbolic",           build_keyring_test);
+            add_group("OverlaySearch",     "system-search-symbolic",             build_overlay_search);
+            add_group("Carousel",          "view-paged-symbolic",                build_carousel);
+            add_group("CircularProgress",  "emblem-synchronizing-symbolic",      build_circular_progress);
+            add_group("ConfirmDialog",     "dialog-warning-symbolic",            build_confirm_dialog);
+            add_group("ConfirmRow",        "emblem-default-symbolic",            build_confirm_row);
+            add_group("BrowserPill",       "web-browser-symbolic",               build_browser_pill);
+            add_group("SourceView",        "text-x-script-symbolic",             build_source_view);
+            add_group("TabBar",            "tab-new-symbolic",                   build_tab_bar);
+            add_group("Color Schemes",     "preferences-color-symbolic",         build_color_schemes);
 
             // Select first row (Welcome)
             nav_list.select_row(nav_list.get_row_at_index(0));
@@ -203,7 +206,7 @@ namespace Singularity.Apps {
             lbl_se.halign = Align.START;
             lbl_se.width_chars = 18;
             row6.append(lbl_se);
-            var se = new Gtk.SearchEntry();
+            var se = new Singularity.Widgets.SearchEntry();
             se.placeholder_text = "Search…";
             se.hexpand = true;
             row6.append(se);
@@ -478,30 +481,69 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 24);
             box.append(section_title("Visual / Charts"));
 
-            // SparkLine
-            var _w16 = new Label("SparkLine:") ;
-            _w16.halign = Align.START;
-            box.append(_w16);
-            var spark = new SparkLine(30, "#5B4FD9", "#5B4FD940");
+            var spark = new SparkLine(30);
             spark.set_size_request(300, 60);
             for (int i = 0; i < 30; i++) spark.push((double)(GLib.Random.int_range(10, 90)) / 100.0);
-            box.append(spark);
 
-            // MiniBar
-            var _w17 = new Label("MiniBar:") ;
-            _w17.halign = Align.START;
-            _w17.margin_top = 16;
-            box.append(_w17);
-            var bar = new MiniBar("#5B4FD9");
+            var bar = new MiniBar();
             bar.set_size_request(300, 40);
             bar.set_value(0.65);
+
+            var ctrl_group = new PreferencesGroup("Colour source");
+            var custom_row = new SwitchRow("Use custom colour", "Off = system accent", false);
+            ctrl_group.add_row(custom_row);
+
+            var picker_row = new ActionRow("Custom colour", "Pick a hue, charts repaint live", null);
+            var picker     = new ColorPickerButton();
+            picker.valign  = Align.CENTER;
+            picker_row.add_suffix(picker);
+            picker_row.visible = false;
+            ctrl_group.add_row(picker_row);
+
+            custom_row.switch_btn.notify["active"].connect(() => {
+                bool on = custom_row.switch_btn.active;
+                picker_row.visible = on;
+                if (on) {
+                    var rgba = picker.color;
+                    string hex = "#%02x%02x%02x".printf(
+                        (int)(rgba.red   * 255),
+                        (int)(rgba.green * 255),
+                        (int)(rgba.blue  * 255));
+                    spark.set_color(hex);
+                    bar.set_color(hex);
+                } else {
+                    spark.set_color(null);
+                    bar.set_color(null);
+                }
+            });
+
+            picker.color_changed.connect((rgba) => {
+                if (!custom_row.switch_btn.active) return;
+                string hex = "#%02x%02x%02x".printf(
+                    (int)(rgba.red   * 255),
+                    (int)(rgba.green * 255),
+                    (int)(rgba.blue  * 255));
+                spark.set_color(hex);
+                bar.set_color(hex);
+            });
+
+            box.append(ctrl_group);
+
+            var sl_lbl = new Label("SparkLine:");
+            sl_lbl.halign = Align.START;
+            box.append(sl_lbl);
+            box.append(spark);
+
+            var mb_lbl = new Label("MiniBar:");
+            mb_lbl.halign = Align.START;
+            mb_lbl.margin_top = 16;
+            box.append(mb_lbl);
             box.append(bar);
 
-            // Chip standalone
-            var _w18 = new Label("Chip:") ;
-            _w18.halign = Align.START;
-            _w18.margin_top = 16;
-            box.append(_w18);
+            var ch_lbl = new Label("Chip:");
+            ch_lbl.halign = Align.START;
+            ch_lbl.margin_top = 16;
+            box.append(ch_lbl);
             var chip_row = new Box(Orientation.HORIZONTAL, 8);
             chip_row.append(new Chip("Running", "media-playback-start-symbolic"));
             chip_row.append(new Chip("Idle", null));
@@ -651,6 +693,333 @@ namespace Singularity.Apps {
             tb.add_css_class("card");
             box.append(tb);
 
+            return centered(box);
+        }
+
+        // Keyring test: talks to the Secret Service on the bus via libsecret.
+        private Secret.Schema? _kr_schema = null;
+        private TextView?      _kr_log    = null;
+
+        private Widget build_keyring_test() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("Keyring Test"));
+
+            var hint = new Label(
+                "Talks to the org.freedesktop.Secret daemon on the session bus. "
+              + "With singularity-keyring running the first call shows the "
+              + "passphrase dialog; subsequent operations succeed silently.");
+            hint.wrap = true;
+            hint.halign = Align.START;
+            box.append(hint);
+
+            _kr_schema = new Secret.Schema("dev.sinty.demo.test",
+                Secret.SchemaFlags.NONE,
+                "service",  Secret.SchemaAttributeType.STRING,
+                "username", Secret.SchemaAttributeType.STRING);
+
+            var form = new PreferencesGroup("Test entry");
+            var svc_row  = new EntryRow("Service");
+            var user_row = new EntryRow("Username");
+            var pass_row = new PasswordRow("Secret");
+            form.add_row(svc_row);
+            form.add_row(user_row);
+            form.add_row(pass_row);
+            svc_row.text  = "sinty.demo";
+            user_row.text = Environment.get_user_name();
+            box.append(form);
+
+            var btnbar = new Box(Orientation.HORIZONTAL, 8);
+            btnbar.margin_top = 4;
+            var store_btn  = new Button.with_label("Store");
+            store_btn.add_css_class("suggested-action");
+            var lookup_btn = new Button.with_label("Lookup");
+            var clear_btn  = new Button.with_label("Delete");
+            var list_btn   = new Button.with_label("List Collections");
+            btnbar.append(store_btn);
+            btnbar.append(lookup_btn);
+            btnbar.append(clear_btn);
+            btnbar.append(list_btn);
+            box.append(btnbar);
+
+            _kr_log = new TextView();
+            _kr_log.editable  = false;
+            _kr_log.monospace = true;
+            _kr_log.wrap_mode = WrapMode.WORD_CHAR;
+            var log_scroll = new ScrolledWindow();
+            log_scroll.set_child(_kr_log);
+            log_scroll.height_request = 220;
+            log_scroll.add_css_class("card");
+            box.append(log_scroll);
+
+            store_btn.clicked.connect(() => {
+                try {
+                    Secret.password_store_sync(_kr_schema,
+                        Secret.COLLECTION_DEFAULT,
+                        "Demo entry (%s / %s)".printf(svc_row.text, user_row.text),
+                        pass_row.text, null,
+                        "service",  svc_row.text,
+                        "username", user_row.text);
+                    kr_log("STORE ok: %s / %s".printf(svc_row.text, user_row.text));
+                } catch (Error e) {
+                    kr_log("STORE failed: " + e.message);
+                }
+            });
+
+            lookup_btn.clicked.connect(() => {
+                try {
+                    string? pwd = Secret.password_lookup_sync(_kr_schema, null,
+                        "service",  svc_row.text,
+                        "username", user_row.text);
+                    if (pwd == null)
+                        kr_log("LOOKUP: no entry for %s / %s".printf(svc_row.text, user_row.text));
+                    else
+                        kr_log("LOOKUP ok: %s / %s -> \"%s\"".printf(svc_row.text, user_row.text, pwd));
+                } catch (Error e) {
+                    kr_log("LOOKUP failed: " + e.message);
+                }
+            });
+
+            clear_btn.clicked.connect(() => {
+                try {
+                    bool removed = Secret.password_clear_sync(_kr_schema, null,
+                        "service",  svc_row.text,
+                        "username", user_row.text);
+                    kr_log("DELETE: %s".printf(removed ? "removed" : "no entry"));
+                } catch (Error e) {
+                    kr_log("DELETE failed: " + e.message);
+                }
+            });
+
+            list_btn.clicked.connect(() => {
+                try {
+                    var svc_obj = Secret.Service.get_sync(Secret.ServiceFlags.LOAD_COLLECTIONS);
+                    var colls   = svc_obj.get_collections();
+                    var sb = new StringBuilder();
+                    sb.append("Collections (");
+                    sb.append(colls.length().to_string());
+                    sb.append("):\n");
+                    foreach (var c in colls) {
+                        sb.append("  - ");
+                        sb.append(c.label);
+                        sb.append(c.locked ? "  [locked]\n" : "  [unlocked]\n");
+                    }
+                    kr_log(sb.str);
+                } catch (Error e) {
+                    kr_log("LIST failed: " + e.message);
+                }
+            });
+
+            return centered(box);
+        }
+
+        private void kr_log(string line) {
+            if (_kr_log == null) return;
+            var buf = _kr_log.buffer;
+            Gtk.TextIter end;
+            buf.get_end_iter(out end);
+            buf.insert(ref end, line + "\n", -1);
+            buf.get_end_iter(out end);
+            _kr_log.scroll_to_iter(end, 0, true, 0, 0);
+        }
+
+        // OverlaySearch: floating spotlight / palette card, added as a
+        // Gtk.Overlay child so it floats above the page content.
+        private OverlaySearch? _demo_overlay = null;
+        private Widget build_overlay_search() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("OverlaySearch"));
+            var info = new Label("Click the button: a centered top-anchored card opens with a search entry "
+                               + "and list of items. Filtering is on title+subtitle substring.");
+            info.wrap = true; info.halign = Align.START;
+            box.append(info);
+
+            var btn = new Button.with_label("Open palette");
+            btn.halign = Align.START;
+            btn.add_css_class("suggested-action");
+            box.append(btn);
+
+            _demo_overlay = new OverlaySearch();
+            _demo_overlay.placeholder = "Type a command…";
+            var items = new OverlaySearchItem[] {
+                new OverlaySearchItem("new",   "document-new-symbolic",     "New File",  "Create a blank document"),
+                new OverlaySearchItem("open",  "document-open-symbolic",    "Open…",     "Open from disk", "Ctrl+O"),
+                new OverlaySearchItem("save",  "document-save-symbolic",    "Save",      "Save current file", "Ctrl+S"),
+                new OverlaySearchItem("quit",  "application-exit-symbolic", "Quit",      "Close the app",   "Ctrl+Q"),
+            };
+            _demo_overlay.set_items(items);
+            _demo_overlay.close_requested.connect(() => _demo_overlay.close());
+            _demo_overlay.item_activated.connect((_id)  => _demo_overlay.close());
+
+            btn.clicked.connect(() => _demo_overlay.open());
+
+            var page_overlay = new Gtk.Overlay();
+            page_overlay.set_child(centered(box));
+            page_overlay.add_overlay(_demo_overlay);
+            return page_overlay;
+        }
+
+        // Carousel: paginated slides with dot indicator.
+        private Widget build_carousel() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("Carousel"));
+            var car = new Carousel();
+            car.set_size_request(-1, 240);
+            string[] hues = { "#E36464", "#64C4E3", "#A2E364", "#E3C264" };
+            for (int i = 0; i < hues.length; i++) {
+                var page = new Gtk.Box(Orientation.VERTICAL, 0);
+                page.hexpand = true; page.vexpand = true;
+                page.halign = Align.FILL; page.valign = Align.FILL;
+                var l = new Label("Page %d".printf(i + 1));
+                l.add_css_class("title-1");
+                page.append(l);
+                try {
+                    var css = new CssProvider();
+                    css.load_from_string(".carousel-demo-%d { background-color: %s; border-radius: 12px; padding: 24px; color: white; }"
+                        .printf(i, hues[i]));
+                    page.add_css_class("carousel-demo-%d".printf(i));
+                    page.get_style_context().add_provider(css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+                } catch {}
+                car.append_page(page);
+            }
+            box.append(car);
+
+            var ctrl_row = new Box(Orientation.HORIZONTAL, 8);
+            ctrl_row.margin_top = 8;
+            var prev = new Button.from_icon_name("go-previous-symbolic");
+            var next = new Button.from_icon_name("go-next-symbolic");
+            prev.clicked.connect(() => {
+                uint p = (car.position == 0) ? car.n_pages - 1 : car.position - 1;
+                car.scroll_to_index(p, true);
+            });
+            next.clicked.connect(() => {
+                uint p = (car.position + 1) % car.n_pages;
+                car.scroll_to_index(p, true);
+            });
+            ctrl_row.append(prev); ctrl_row.append(next);
+            box.append(ctrl_row);
+            return centered(box, 640);
+        }
+
+        // CircularProgress: ring chart.
+        private Widget build_circular_progress() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("CircularProgress"));
+
+            var row = new Box(Orientation.HORIZONTAL, 24);
+            row.halign = Align.START;
+            double[] vals = { 0.25, 0.5, 0.75, 1.0 };
+            foreach (var v in vals) {
+                var cp = new CircularProgress(72);
+                cp.fraction = v;
+                cp.label    = "%d%%".printf((int)(v * 100));
+                row.append(cp);
+            }
+            box.append(row);
+            return centered(box);
+        }
+
+        // ConfirmDialog: title + icon + description + primary/secondary actions.
+        private Widget build_confirm_dialog() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("ConfirmDialog"));
+            var info = new Label("ConfirmDialog: title + icon + description + primary/secondary actions.");
+            info.wrap = true; info.halign = Align.START;
+            box.append(info);
+
+            var btn = new Button.with_label("Open ConfirmDialog");
+            btn.halign = Align.START;
+            btn.add_css_class("suggested-action");
+            btn.clicked.connect(() => {
+                var d = new ConfirmDialog(application,
+                    "Delete this file?",
+                    "dialog-warning-symbolic",
+                    "This action cannot be undone.",
+                    "Delete",
+                    ConfirmDialog.ActionStyle.DESTRUCTIVE);
+                d.set_secondary("Cancel", ConfirmDialog.ActionStyle.DEFAULT);
+                d.response.connect((r) => {
+                    string s = (r == ConfirmDialog.Response.PRIMARY) ? "PRIMARY"
+                             : (r == ConfirmDialog.Response.SECONDARY) ? "SECONDARY" : "CANCEL";
+                    message("ConfirmDialog response: %s", s);
+                });
+                d.present();
+            });
+            box.append(btn);
+            return centered(box);
+        }
+
+        // ConfirmRow: inline "are you sure" inside a PreferencesGroup.
+        private Widget build_confirm_row() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("ConfirmRow"));
+            var g = new PreferencesGroup("Danger zone");
+            var cr = new ConfirmRow("Reset settings", "Click then confirm to wipe everything", "edit-clear-symbolic");
+            g.add_row(cr);
+            box.append(g);
+            return centered(box);
+        }
+
+        // BrowserPill: address-bar style chip.
+        private Widget build_browser_pill() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("BrowserPill"));
+            var pill = new BrowserPill();
+            pill.update_from_uri("https://example.com/some/path");
+            pill.halign = Align.START;
+            box.append(pill);
+            return centered(box);
+        }
+
+        // SourceView: GtkSource.View with Singularity defaults.
+        private Widget build_source_view() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("SourceView"));
+            var sv = new SourceView();
+            sv.buffer.set_text("// Singularity SourceView\n// Monospace, accent caret, accent selection.\n\nfn main() {\n    println(\"hello\");\n}", -1);
+            sv.set_size_request(-1, 240);
+            sv.top_margin = 12;
+            var scroll = new ScrolledWindow();
+            scroll.set_child(sv);
+            scroll.hexpand = true; scroll.vexpand = true;
+            scroll.add_css_class("card");
+            scroll.set_size_request(-1, 260);
+            box.append(scroll);
+            return centered(box, 720);
+        }
+
+        // TabBar: standalone tab strip driven by a Gtk.Notebook.
+        private Widget build_tab_bar() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("TabBar"));
+            var nb = new Notebook();
+            string[] names = { "Home", "Inbox", "Send" };
+            foreach (var n in names) {
+                var page = new Label("Content of " + n);
+                page.margin_top = 12;
+                nb.append_page(page, new Label(n));
+            }
+            var tb = new TabBar(nb);
+            box.append(tb);
+            box.append(nb);
+            return centered(box);
+        }
+
+        // ColorSchemePreview + ColorSchemeRow: terminal/editor color scheme picker.
+        private Widget build_color_schemes() {
+            var box = new Box(Orientation.VERTICAL, 16);
+            box.append(section_title("Color Schemes"));
+
+            var themes = new Gee.ArrayList<ColorTheme>();
+            themes.add(new ColorTheme("dracula", "Dracula",  "#282a36", "#f8f8f2",
+                {"#000000","#ff5555","#50fa7b","#f1fa8c","#bd93f9","#ff79c6","#8be9fd","#bbbbbb"}));
+            themes.add(new ColorTheme("nord", "Nord",       "#2e3440", "#d8dee9",
+                {"#3b4252","#bf616a","#a3be8c","#ebcb8b","#81a1c1","#b48ead","#88c0d0","#e5e9f0"}));
+            themes.add(new ColorTheme("onedark", "One Dark","#282c34", "#abb2bf",
+                {"#000000","#e06c75","#98c379","#e5c07b","#61afef","#c678dd","#56b6c2","#abb2bf"}));
+
+            var g = new PreferencesGroup("Editor theme");
+            g.add_row(new ColorSchemeRow("Scheme", themes, "nord"));
+            box.append(g);
             return centered(box);
         }
 
