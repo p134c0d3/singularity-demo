@@ -17,7 +17,7 @@ namespace Singularity.Apps {
 
         public DemoWindow(Gtk.Application app) {
             Object(application: app);
-            set_title("libsingularity Demo");
+            set_title(_("libsingularity Demo"));
             set_default_size(1000, 680);
 
             var root = new Box(Orientation.HORIZONTAL, 0);
@@ -49,7 +49,7 @@ namespace Singularity.Apps {
             add_group("Welcome",           "go-home-symbolic",                   build_welcome_page);
             add_group("Controls",          "input-mouse-symbolic",               build_controls);
             add_group("Preferences Rows",  "preferences-system-symbolic",        build_preference_rows);
-            add_group("PreferencesGroup",  "view-list-symbolic",                 build_preferences_group);
+            add_group(_("PreferencesGroup"),  "view-list-symbolic",                 build_preferences_group);
             add_group("PreferencesPage",   "document-properties-symbolic",       build_preferences_page);
             add_group("PreferencesWindow", "window-new-symbolic",                build_preferences_window_demo);
             add_group("Navigation",        "go-next-symbolic",                   build_navigation);
@@ -155,7 +155,7 @@ namespace Singularity.Apps {
 
             // IconButton
             var row1 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_ib = new Label("IconButton:");
+            var lbl_ib = new Label(_("IconButton:"));
             lbl_ib.halign = Align.START;
             lbl_ib.width_chars = 18;
             row1.append(lbl_ib);
@@ -164,7 +164,7 @@ namespace Singularity.Apps {
 
             // CircularButton
             var row2 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_cb = new Label("CircularButton:");
+            var lbl_cb = new Label(_("CircularButton:"));
             lbl_cb.halign = Align.START;
             lbl_cb.width_chars = 18;
             row2.append(lbl_cb);
@@ -173,7 +173,7 @@ namespace Singularity.Apps {
 
             // CloseButton
             var row3 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_cl = new Label("CloseButton:");
+            var lbl_cl = new Label(_("CloseButton:"));
             lbl_cl.halign = Align.START;
             lbl_cl.width_chars = 18;
             row3.append(lbl_cl);
@@ -182,7 +182,7 @@ namespace Singularity.Apps {
 
             // ColorPickerButton
             var row4 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_cp = new Label("ColorPickerButton:");
+            var lbl_cp = new Label(_("ColorPickerButton:"));
             lbl_cp.halign = Align.START;
             lbl_cp.width_chars = 18;
             row4.append(lbl_cp);
@@ -192,7 +192,7 @@ namespace Singularity.Apps {
 
             // QuickSettingTile
             var row5 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_qs = new Label("QuickSettingTile:");
+            var lbl_qs = new Label(_("QuickSettingTile:"));
             lbl_qs.halign = Align.START;
             lbl_qs.width_chars = 18;
             row5.append(lbl_qs);
@@ -202,19 +202,19 @@ namespace Singularity.Apps {
 
             // SearchEntry
             var row6 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_se = new Label("SearchEntry:");
+            var lbl_se = new Label(_("SearchEntry:"));
             lbl_se.halign = Align.START;
             lbl_se.width_chars = 18;
             row6.append(lbl_se);
             var se = new Singularity.Widgets.SearchEntry();
-            se.placeholder_text = "Search…";
+            se.placeholder_text = _("Search…");
             se.hexpand = true;
             row6.append(se);
             box.append(row6);
 
             // SegmentedControl
             var row7 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_sg = new Label("SegmentedControl:");
+            var lbl_sg = new Label(_("SegmentedControl:"));
             lbl_sg.halign = Align.START;
             lbl_sg.width_chars = 18;
             row7.append(lbl_sg);
@@ -233,24 +233,24 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 8);
             box.append(section_title("Preference Rows"));
 
-            var g = new PreferencesGroup("All Row Types");
-            g.add_row(new ActionRow("ActionRow", "A simple non-interactive row", "folder-symbolic"));
-            g.add_row(new SwitchRow("SwitchRow", "Toggle something on or off", true));
+            var g = new PreferencesGroup(_("All Row Types"));
+            g.add_row(new ActionRow(_("ActionRow"), _("A simple non-interactive row"), "folder-symbolic"));
+            g.add_row(new SwitchRow(_("SwitchRow"), _("Toggle something on or off"), true));
             g.add_row(new SpinRow("SpinRow", "Pick a number", 1, 100, 1, 42));
             g.add_row(new EntryRow("EntryRow"));
             g.add_row(new PasswordRow("PasswordRow"));
             g.add_row(new EmailRow("EmailRow"));
-            var expander = new ExpanderRow("ExpanderRow", "Click to expand");
-            expander.add_row(new ActionRow("Child row 1", null));
-            expander.add_row(new ActionRow("Child row 2", null));
+            var expander = new ExpanderRow(_("ExpanderRow"), _("Click to expand"));
+            expander.add_row(new ActionRow(_("Child row 1"), null));
+            expander.add_row(new ActionRow(_("Child row 2"), null));
             g.add_row(expander);
-            g.add_row(new SelectionRow("SelectionRow", {"Option A", "Option B", "Option C"}, "Option A"));
-            var ser = new SearchableExpanderRow("SearchableExpanderRow", "Search inside");
-            var ser_lbl1 = new Label("Result 1");
+            g.add_row(new SelectionRow(_("SelectionRow"), {_("Option A"), _("Option B"), _("Option C")}, _("Option A")));
+            var ser = new SearchableExpanderRow(_("SearchableExpanderRow"), _("Search inside"));
+            var ser_lbl1 = new Label(_("Result 1"));
             ser_lbl1.margin_top = 6;
             ser_lbl1.margin_bottom = 6;
             ser.list_box.append(ser_lbl1);
-            var ser_lbl2 = new Label("Result 2");
+            var ser_lbl2 = new Label(_("Result 2"));
             ser_lbl2.margin_top = 6;
             ser_lbl2.margin_bottom = 6;
             ser.list_box.append(ser_lbl2);
@@ -263,17 +263,17 @@ namespace Singularity.Apps {
         // ── PreferencesGroup ──────────────────────────────────────────────
         private Widget build_preferences_group() {
             var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("PreferencesGroup"));
+            box.append(section_title(_("PreferencesGroup")));
 
-            var g1 = new PreferencesGroup("Group with header suffix");
+            var g1 = new PreferencesGroup(_("Group with header suffix"));
             var suffix_btn = new Button.from_icon_name("list-add-symbolic");
             suffix_btn.add_css_class("flat");
             g1.add_header_suffix(suffix_btn);
-            g1.add_row(new ActionRow("Item one", "subtitle here"));
-            g1.add_row(new SwitchRow("Item two", null, false));
+            g1.add_row(new ActionRow(_("Item one"), _("subtitle here")));
+            g1.add_row(new SwitchRow(_("Item two"), null, false));
             box.append(g1);
 
-            var g2 = new PreferencesGroup("Group with description", "Optional subtitle below the title");
+            var g2 = new PreferencesGroup(_("Group with description"), _("Optional subtitle below the title"));
             g2.add_row(new EntryRow("Name"));
             g2.add_row(new EntryRow("Value"));
             box.append(g2);
@@ -291,13 +291,13 @@ namespace Singularity.Apps {
 
             var page = new PreferencesPage();
 
-            var g1 = new PreferencesGroup("Section One");
-            g1.add_row(new SwitchRow("Enable feature", null, true));
+            var g1 = new PreferencesGroup(_("Section One"));
+            g1.add_row(new SwitchRow(_("Enable feature"), null, true));
             g1.add_row(new SpinRow("Timeout", "Seconds before timeout", 1, 60, 1, 10));
             page.append_group(g1);
 
-            var g2 = new PreferencesGroup("Section Two");
-            g2.add_row(new SelectionRow("Mode", {"Fast", "Balanced", "Power Save"}, "Balanced"));
+            var g2 = new PreferencesGroup(_("Section Two"));
+            g2.add_row(new SelectionRow(_("Mode"), {_("Fast"), _("Balanced"), _("Power Save")}, _("Balanced")));
             g2.add_row(new EntryRow("Custom value"));
             page.append_group(g2);
 
@@ -315,17 +315,17 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("PreferencesWindow"));
 
-            var info = new Label("PreferencesWindow is a top-level Gtk.Window. Click the button to open it.");
+            var info = new Label(_("PreferencesWindow is a top-level Gtk.Window. Click the button to open it."));
             info.wrap = true;
             info.halign = Align.START;
             box.append(info);
 
-            var btn = new Button.with_label("Open PreferencesWindow");
+            var btn = new Button.with_label(_("Open PreferencesWindow"));
             btn.halign = Align.START;
             btn.add_css_class("suggested-action");
             btn.clicked.connect(() => {
-                var g = new PreferencesGroup("Demo group");
-                g.add_row(new SwitchRow("Option A", null, true));
+                var g = new PreferencesGroup(_("Demo group"));
+                g.add_row(new SwitchRow(_("Option A"), null, true));
                 g.add_row(new EntryRow("Some setting"));
                 var pg = new PreferencesPage();
                 pg.append_group(g);
@@ -342,12 +342,12 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("Navigation"));
 
-            var lbl_ssl = new Label("SidebarSectionLabel:");
+            var lbl_ssl = new Label(_("SidebarSectionLabel:"));
             lbl_ssl.halign = Align.START;
             box.append(lbl_ssl);
             box.append(new SidebarSectionLabel("Section Header"));
 
-            var lbl_mr = new Label("MenuRow:");
+            var lbl_mr = new Label(_("MenuRow:"));
             lbl_mr.halign = Align.START;
             lbl_mr.margin_top = 12;
             box.append(lbl_mr);
@@ -373,21 +373,21 @@ namespace Singularity.Apps {
             var page1 = new Box(Orientation.VERTICAL, 0);
             page1.halign = Align.CENTER;
             page1.valign = Align.CENTER;
-            var _w13 = new Label("Content of Tab 1") ;
+            var _w13 = new Label(_("Content of Tab 1")) ;
             _w13.add_css_class("title-2");
             page1.append(_w13);
 
             var page2 = new Box(Orientation.VERTICAL, 0);
             page2.halign = Align.CENTER;
             page2.valign = Align.CENTER;
-            var _w14 = new Label("Content of Tab 2") ;
+            var _w14 = new Label(_("Content of Tab 2")) ;
             _w14.add_css_class("title-2");
             page2.append(_w14);
 
             var page3 = new Box(Orientation.VERTICAL, 0);
             page3.halign = Align.CENTER;
             page3.valign = Align.CENTER;
-            var _w15 = new Label("Content of Tab 3") ;
+            var _w15 = new Label(_("Content of Tab 3")) ;
             _w15.add_css_class("title-2");
             page3.append(_w15);
 
@@ -406,7 +406,7 @@ namespace Singularity.Apps {
 
             var sp = new StatusPage();
             sp.icon_name = "folder-symbolic";
-            sp.title = "No Files Found";
+            sp.title = _("No Files Found");
             sp.description = "Try a different search or create a new file.";
             box.append(sp);
 
@@ -417,8 +417,8 @@ namespace Singularity.Apps {
         private Widget build_welcome_page() {
             var wp = new WelcomePage();
             wp.app_icon_name = "dev.sinty.demo";
-            wp.title = "libsingularity Demo";
-            wp.subtitle = "Browse the sidebar to explore all available widgets.\nClick the actions below to see WelcomePage in action.";
+            wp.title = _("libsingularity Demo");
+            wp.subtitle = _("Browse the sidebar to explore all available widgets.\nClick the actions below to see WelcomePage in action.");
             wp.hexpand = true;
             wp.vexpand = true;
             wp.add_action("document-open-symbolic", "Open Documentation", "View the full libsingularity API reference", () => {
@@ -443,19 +443,19 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("Dialogs"));
 
-            var info = new Label("AppDialog is a lightweight modal window. Click below to open one.");
+            var info = new Label(_("AppDialog is a lightweight modal window. Click below to open one."));
             info.wrap = true;
             info.halign = Align.START;
             box.append(info);
 
-            var btn = new Button.with_label("Open AppDialog");
+            var btn = new Button.with_label(_("Open AppDialog"));
             btn.halign = Align.START;
             btn.add_css_class("suggested-action");
             btn.clicked.connect(() => {
                 var dlg = new AppDialog(application, true);
-                dlg.set_title("Sample Dialog");
+                dlg.set_title(_("Sample Dialog"));
                 dlg.transient_for = this;
-                var lbl = new Label("This is an AppDialog.\nIt has a custom title bar and close button.");
+                var lbl = new Label(_("This is an AppDialog.\nIt has a custom title bar and close button."));
                 lbl.wrap = true;
                 lbl.margin_top = 24;
                 lbl.margin_bottom = 24;
@@ -467,7 +467,7 @@ namespace Singularity.Apps {
             box.append(btn);
 
             // ShellDialog info
-            var info2 = new Label("ShellDialog is for shell-layer overlays (requires LayerShell context).");
+            var info2 = new Label(_("ShellDialog is for shell-layer overlays (requires LayerShell context)."));
             info2.wrap = true;
             info2.halign = Align.START;
             info2.margin_top = 12;
@@ -489,11 +489,11 @@ namespace Singularity.Apps {
             bar.set_size_request(300, 40);
             bar.set_value(0.65);
 
-            var ctrl_group = new PreferencesGroup("Colour source");
-            var custom_row = new SwitchRow("Use custom colour", "Off = system accent", false);
+            var ctrl_group = new PreferencesGroup(_("Colour source"));
+            var custom_row = new SwitchRow(_("Use custom colour"), _("Off = system accent"), false);
             ctrl_group.add_row(custom_row);
 
-            var picker_row = new ActionRow("Custom colour", "Pick a hue, charts repaint live", null);
+            var picker_row = new ActionRow(_("Custom colour"), _("Pick a hue, charts repaint live"), null);
             var picker     = new ColorPickerButton();
             picker.valign  = Align.CENTER;
             picker_row.add_suffix(picker);
@@ -529,18 +529,18 @@ namespace Singularity.Apps {
 
             box.append(ctrl_group);
 
-            var sl_lbl = new Label("SparkLine:");
+            var sl_lbl = new Label(_("SparkLine:"));
             sl_lbl.halign = Align.START;
             box.append(sl_lbl);
             box.append(spark);
 
-            var mb_lbl = new Label("MiniBar:");
+            var mb_lbl = new Label(_("MiniBar:"));
             mb_lbl.halign = Align.START;
             mb_lbl.margin_top = 16;
             box.append(mb_lbl);
             box.append(bar);
 
-            var ch_lbl = new Label("Chip:");
+            var ch_lbl = new Label(_("Chip:"));
             ch_lbl.halign = Align.START;
             ch_lbl.margin_top = 16;
             box.append(ch_lbl);
@@ -558,7 +558,7 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("Chips & ChipBar"));
 
-            var _w19 = new Label("Chip (standalone):");
+            var _w19 = new Label(_("Chip (standalone):"));
             _w19.halign = Align.START;
             box.append(_w19);
             var row = new Box(Orientation.HORIZONTAL, 8);
@@ -567,7 +567,7 @@ namespace Singularity.Apps {
             row.append(new Chip("Done", "emblem-default-symbolic"));
             box.append(row);
 
-            var lbl_cb2 = new Label("ChipBar:");
+            var lbl_cb2 = new Label(_("ChipBar:"));
             lbl_cb2.halign = Align.START;
             lbl_cb2.margin_top = 16;
             box.append(lbl_cb2);
@@ -586,7 +586,7 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("HoverControls"));
 
-            var info = new Label("HoverControls shows a toolbar overlay on mouse hover.");
+            var info = new Label(_("HoverControls shows a toolbar overlay on mouse hover."));
             info.wrap = true;
             info.halign = Align.START;
             box.append(info);
@@ -600,17 +600,17 @@ namespace Singularity.Apps {
             inner.vexpand = true;
             inner.halign = Align.CENTER;
             inner.valign = Align.CENTER;
-            var _w21 = new Label("Hover over me") ;
+            var _w21 = new Label(_("Hover over me")) ;
             _w21.add_css_class("title-2");
             inner.append(_w21);
             hc.set_content(inner);
 
             var btn1 = new Button.from_icon_name("document-edit-symbolic");
-            btn1.tooltip_text = "Edit";
+            btn1.tooltip_text = _("Edit");
             hc.add_control(btn1);
 
             var btn2 = new Button.from_icon_name("user-trash-symbolic");
-            btn2.tooltip_text = "Delete";
+            btn2.tooltip_text = _("Delete");
             hc.add_control(btn2);
 
             box.append(hc);
@@ -627,12 +627,12 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("ContextMenu"));
 
-            var info = new Label("Right-click the button (or click it) to show a ContextMenu.");
+            var info = new Label(_("Right-click the button (or click it) to show a ContextMenu."));
             info.wrap = true;
             info.halign = Align.START;
             box.append(info);
 
-            var btn = new Button.with_label("Show Context Menu");
+            var btn = new Button.with_label(_("Show Context Menu"));
             btn.halign = Align.START;
             btn.clicked.connect(() => {
                 _demo_ctx_menu = new ContextMenu(btn);
@@ -653,17 +653,17 @@ namespace Singularity.Apps {
             var box = new Box(Orientation.VERTICAL, 24);
             box.append(section_title("Calendar Views"));
 
-            var _w22 = new Label("CalendarNavPicker:") ;
+            var _w22 = new Label(_("CalendarNavPicker:")) ;
             _w22.halign = Align.START;
             box.append(_w22);
             var nav = new CalendarNavPicker();
             box.append(nav);
 
-            var _w23 = new Label("CalendarMonthView:");
+            var _w23 = new Label(_("CalendarMonthView:"));
             _w23.halign = Align.START;
             _w23.margin_top = 16;
             box.append(_w23);
-            var lbl_no_cal = new Label("(requires CalendarManager available in shell context)");
+            var lbl_no_cal = new Label(_("(requires CalendarManager available in shell context)"));
             lbl_no_cal.halign = Align.START;
             lbl_no_cal.add_css_class("dim-label");
             box.append(lbl_no_cal);
@@ -684,12 +684,12 @@ namespace Singularity.Apps {
             info.halign = Align.START;
             box.append(info);
 
-            var _w24 = new Label("ToolBar (standalone example):") ;
+            var _w24 = new Label(_("ToolBar (standalone example):")) ;
             _w24.halign = Align.START;
             _w24.margin_top = 12;
             box.append(_w24);
             var tb = new ToolBar();
-            tb.set_title("My Page");
+            tb.set_title(_("My Page"));
             tb.add_css_class("card");
             box.append(tb);
 
@@ -717,7 +717,7 @@ namespace Singularity.Apps {
                 "service",  Secret.SchemaAttributeType.STRING,
                 "username", Secret.SchemaAttributeType.STRING);
 
-            var form = new PreferencesGroup("Test entry");
+            var form = new PreferencesGroup(_("Test entry"));
             var svc_row  = new EntryRow("Service");
             var user_row = new EntryRow("Username");
             var pass_row = new PasswordRow("Secret");
@@ -730,11 +730,11 @@ namespace Singularity.Apps {
 
             var btnbar = new Box(Orientation.HORIZONTAL, 8);
             btnbar.margin_top = 4;
-            var store_btn  = new Button.with_label("Store");
+            var store_btn  = new Button.with_label(_("Store"));
             store_btn.add_css_class("suggested-action");
-            var lookup_btn = new Button.with_label("Lookup");
-            var clear_btn  = new Button.with_label("Delete");
-            var list_btn   = new Button.with_label("List Collections");
+            var lookup_btn = new Button.with_label(_("Lookup"));
+            var clear_btn  = new Button.with_label(_("Delete"));
+            var list_btn   = new Button.with_label(_("List Collections"));
             btnbar.append(store_btn);
             btnbar.append(lookup_btn);
             btnbar.append(clear_btn);
@@ -828,12 +828,12 @@ namespace Singularity.Apps {
         private Widget build_overlay_search() {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("OverlaySearch"));
-            var info = new Label("Click the button: a centered top-anchored card opens with a search entry "
+            var info = new Label(_("Click the button: a centered top-anchored card opens with a search entry ")
                                + "and list of items. Filtering is on title+subtitle substring.");
             info.wrap = true; info.halign = Align.START;
             box.append(info);
 
-            var btn = new Button.with_label("Open palette");
+            var btn = new Button.with_label(_("Open palette"));
             btn.halign = Align.START;
             btn.add_css_class("suggested-action");
             box.append(btn);
@@ -869,7 +869,7 @@ namespace Singularity.Apps {
                 var page = new Gtk.Box(Orientation.VERTICAL, 0);
                 page.hexpand = true; page.vexpand = true;
                 page.halign = Align.FILL; page.valign = Align.FILL;
-                var l = new Label("Page %d".printf(i + 1));
+                var l = new Label(_("Page %d").printf(i + 1));
                 l.add_css_class("title-1");
                 page.append(l);
                 try {
@@ -922,11 +922,11 @@ namespace Singularity.Apps {
         private Widget build_confirm_dialog() {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("ConfirmDialog"));
-            var info = new Label("ConfirmDialog: title + icon + description + primary/secondary actions.");
+            var info = new Label(_("ConfirmDialog: title + icon + description + primary/secondary actions."));
             info.wrap = true; info.halign = Align.START;
             box.append(info);
 
-            var btn = new Button.with_label("Open ConfirmDialog");
+            var btn = new Button.with_label(_("Open ConfirmDialog"));
             btn.halign = Align.START;
             btn.add_css_class("suggested-action");
             btn.clicked.connect(() => {
@@ -948,11 +948,11 @@ namespace Singularity.Apps {
             return centered(box);
         }
 
-        // ConfirmRow: inline "are you sure" inside a PreferencesGroup.
+        // ConfirmRow: inline _("are you sure") inside a PreferencesGroup.
         private Widget build_confirm_row() {
             var box = new Box(Orientation.VERTICAL, 16);
             box.append(section_title("ConfirmRow"));
-            var g = new PreferencesGroup("Danger zone");
+            var g = new PreferencesGroup(_("Danger zone"));
             var cr = new ConfirmRow("Reset settings", "Click then confirm to wipe everything", "edit-clear-symbolic");
             g.add_row(cr);
             box.append(g);
@@ -994,7 +994,7 @@ namespace Singularity.Apps {
             var nb = new Notebook();
             string[] names = { "Home", "Inbox", "Send" };
             foreach (var n in names) {
-                var page = new Label("Content of " + n);
+                var page = new Label(_("Content of ") + n);
                 page.margin_top = 12;
                 nb.append_page(page, new Label(n));
             }
@@ -1017,7 +1017,7 @@ namespace Singularity.Apps {
             themes.add(new ColorTheme("onedark", "One Dark","#282c34", "#abb2bf",
                 {"#000000","#e06c75","#98c379","#e5c07b","#61afef","#c678dd","#56b6c2","#abb2bf"}));
 
-            var g = new PreferencesGroup("Editor theme");
+            var g = new PreferencesGroup(_("Editor theme"));
             g.add_row(new ColorSchemeRow("Scheme", themes, "nord"));
             box.append(g);
             return centered(box);
