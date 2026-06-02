@@ -1,7 +1,3 @@
-// Demo pages declared in vetro. Each top-level object has an id; window.vala
-// loads them via Gtk.Builder, places them in the content stack, and wires any
-// interactive/dynamic bits (segment options, etc.) by fetching ids.
-
 ScrolledWindow(id: "controls_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
     VBox(hexpand: true, vexpand: true, valign: "start",
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
@@ -91,8 +87,6 @@ ScrolledWindow(id: "preference_rows_page", hscrollbarPolicy: "never", hexpand: t
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(spacing: 8) {
             Label(label: "Preference Rows", halign: "start", marginBottom: 16).cssClass("title-2")
-            // Rows added imperatively in Vala (SelectionRow/SearchableExpanderRow
-            // are not markup-friendly), so just declare the empty group here.
             PreferencesGroup(id: "preference_rows_group", title: "All Row Types").translatable("title")
         }
     }
@@ -103,7 +97,6 @@ ScrolledWindow(id: "preferences_page_page", hscrollbarPolicy: "never", hexpand: 
          marginTop: 24, marginStart: 24, marginEnd: 24) {
         Label(label: "PreferencesPage", halign: "start", marginBottom: 16).cssClass("title-2")
         ScrolledWindow(hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
-            // Groups appended in Vala (g2 contains a SelectionRow).
             PreferencesPage(id: "preferences_page_inner")
         }
     }
@@ -179,7 +172,6 @@ ScrolledWindow(id: "confirm_row_page", hscrollbarPolicy: "never", hexpand: true,
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(spacing: 16) {
             Label(label: "ConfirmRow", halign: "start", marginBottom: 16).cssClass("title-2")
-            // ConfirmRow added imperatively in Vala (constructor-arg based).
             PreferencesGroup(id: "confirm_row_group", title: "Danger zone").translatable("title")
         }
     }
@@ -209,13 +201,11 @@ ScrolledWindow(id: "chips_page", hscrollbarPolicy: "never", hexpand: true, vexpa
                 Chip(chipId: "done", chipLabel: "Done")
             }
             Label(label: "ChipBar:", halign: "start", marginTop: 16).translatable("label")
-            // Chips added imperatively in Vala (ChipBar.add_chip).
             ChipBar(id: "chips_chipbar", hexpand: true)
         }
     }
 }
 
-// TabContainer: title scaffold in markup; tabs added in Vala (add_tab).
 VBox(id: "tab_container_page", spacing: 16, marginTop: 24, marginStart: 24, marginEnd: 24) {
     Label(label: "TabContainer", halign: "start", marginBottom: 16).cssClass("title-2")
     TabContainer(id: "tab_container_tc", hexpand: true, vexpand: true)
@@ -227,7 +217,6 @@ ScrolledWindow(id: "calendar_page", hscrollbarPolicy: "never", hexpand: true, ve
         VBox(id: "calendar_box", spacing: 24) {
             Label(label: "Calendar Views", halign: "start", marginBottom: 16).cssClass("title-2")
             Label(id: "calendar_nav_label", label: "CalendarNavPicker:", halign: "start").translatable("label")
-            // CalendarNavPicker inserted after its label in Vala.
             Label(label: "CalendarMonthView:", halign: "start", marginTop: 16).translatable("label")
             Label(label: "(requires CalendarManager available in shell context)",
                   halign: "start").translatable("label").cssClass("dim-label")
@@ -240,7 +229,6 @@ ScrolledWindow(id: "browser_pill_page", hscrollbarPolicy: "never", hexpand: true
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(id: "browser_pill_box", spacing: 16) {
             Label(label: "BrowserPill", halign: "start", marginBottom: 16).cssClass("title-2")
-            // BrowserPill appended in Vala (needs update_from_uri).
         }
     }
 }
@@ -250,7 +238,6 @@ ScrolledWindow(id: "source_view_page", hscrollbarPolicy: "never", hexpand: true,
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(id: "source_view_box", spacing: 16) {
             Label(label: "SourceView", halign: "start", marginBottom: 16).cssClass("title-2")
-            // SourceView + scroller appended in Vala.
         }
     }
 }
@@ -260,7 +247,6 @@ ScrolledWindow(id: "tab_bar_page", hscrollbarPolicy: "never", hexpand: true, vex
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(id: "tab_bar_box", spacing: 16) {
             Label(label: "TabBar", halign: "start", marginBottom: 16).cssClass("title-2")
-            // TabBar + Notebook appended in Vala.
         }
     }
 }
@@ -270,7 +256,6 @@ ScrolledWindow(id: "circular_progress_page", hscrollbarPolicy: "never", hexpand:
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(spacing: 16) {
             Label(label: "CircularProgress", halign: "start", marginBottom: 16).cssClass("title-2")
-            // Rings added in Vala (constructed with a diameter and fraction).
             HBox(id: "circular_progress_row", spacing: 24, halign: "start")
         }
     }
@@ -281,7 +266,6 @@ ScrolledWindow(id: "color_schemes_page", hscrollbarPolicy: "never", hexpand: tru
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(spacing: 16) {
             Label(label: "Color Schemes", halign: "start", marginBottom: 16).cssClass("title-2")
-            // ColorSchemeRow added in Vala (needs a theme list).
             PreferencesGroup(id: "color_schemes_group", title: "Editor theme").translatable("title")
         }
     }
@@ -292,8 +276,6 @@ ScrolledWindow(id: "visual_page", hscrollbarPolicy: "never", hexpand: true, vexp
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(id: "visual_box", spacing: 24) {
             Label(label: "Visual / Charts", halign: "start", marginBottom: 16).cssClass("title-2")
-            // Colour-source controls, SparkLine, MiniBar and Chip row are built
-            // in Vala (random data + live colour repaint).
         }
     }
 }
@@ -305,7 +287,6 @@ ScrolledWindow(id: "hover_controls_page", hscrollbarPolicy: "never", hexpand: tr
             Label(label: "HoverControls", halign: "start", marginBottom: 16).cssClass("title-2")
             Label(label: "HoverControls shows a toolbar overlay on mouse hover.",
                   wrap: true, halign: "start").translatable("label")
-            // HoverControls (set_content + add_control) built in Vala.
         }
     }
 }
@@ -317,8 +298,6 @@ ScrolledWindow(id: "keyring_test_page", hscrollbarPolicy: "never", hexpand: true
             Label(label: "Keyring Test", halign: "start", marginBottom: 16).cssClass("title-2")
             Label(label: "Talks to the org.freedesktop.Secret daemon on the session bus. With singularity-keyring running the first call shows the passphrase dialog; subsequent operations succeed silently.",
                   wrap: true, halign: "start").translatable("label")
-            // Form, button bar and log built in Vala (rows seeded with values,
-            // libsecret operations wired to the buttons).
         }
     }
 }
@@ -328,13 +307,10 @@ ScrolledWindow(id: "carousel_page", hscrollbarPolicy: "never", hexpand: true, ve
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
         VBox(id: "carousel_box", spacing: 16) {
             Label(label: "Carousel", halign: "start", marginBottom: 16).cssClass("title-2")
-            // Carousel pages + nav buttons built in Vala.
         }
     }
 }
 
-// OverlaySearch: inner page content; the OverlaySearch card is added as a
-// Gtk.Overlay child in Vala so it floats above this content.
 ScrolledWindow(id: "overlay_search_content", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
     VBox(hexpand: true, valign: "start",
          marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
