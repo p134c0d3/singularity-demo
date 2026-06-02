@@ -7,8 +7,10 @@ namespace Singularity.Apps {
     [GtkTemplate(ui = "/dev/sinty/demo/ui/main.ui")]
     public class DemoWindow : Singularity.Widgets.Window {
 
-        // The window skeleton (sidebar, nav list, content stack) is declared
-        // in ui/main.vetro and provided here as template children.
+        // The window skeleton is declared in ui/main.vetro and placed into the
+        // window's sidebar/content areas via set_sidebar()/set_content() below.
+        [GtkChild] private unowned Singularity.Widgets.AppSidebar nav_sidebar;
+        [GtkChild] private unowned Box content_root;
         [GtkChild] private unowned Stack content_stack;
         [GtkChild] private unowned ListBox nav_list;
 
@@ -26,6 +28,31 @@ namespace Singularity.Apps {
             Object(application: app);
             set_title(_("libsingularity Demo"));
             set_default_size(1000, 680);
+
+            // Place the template skeleton: nav into the sidebar slot (gets the
+            // .window-sidebar gutter from the Window's sidebar area), the rest
+            // into the content area.
+            set_sidebar(nav_sidebar);
+            set_sidebar_visible(true);
+            set_content(content_root);
+
+            // Register window-control bubbles (the bar is created lazily on the
+            // first add_bubble_* call and carries the window controls), plus a
+            // couple of demo actions to showcase the HoverControls bubble bar.
+            add_bubble_icon("help-browser-symbolic", _("Documentation"), () => {
+                try {
+                    AppInfo.launch_default_for_uri("https://github.com/singularityos-lab/libsingularity", null);
+                } catch (Error e) {
+                    warning("Could not open URL: %s", e.message);
+                }
+            });
+            add_bubble_icon("insert-link-symbolic", _("View Source"), () => {
+                try {
+                    AppInfo.launch_default_for_uri("https://github.com/singularityos-lab/singularity-demo", null);
+                } catch (Error e) {
+                    warning("Could not open URL: %s", e.message);
+                }
+            });
 
             _pages = new Gtk.Builder.from_resource("/dev/sinty/demo/ui/pages.ui");
 
