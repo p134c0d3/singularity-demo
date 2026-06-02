@@ -67,7 +67,7 @@ namespace Singularity.Apps {
             });
         }
 
-        // ── Sidebar helpers ────────────────────────────────────────────────
+        // Sidebar helpers
 
         private delegate Widget PageBuilder();
 
@@ -96,7 +96,7 @@ namespace Singularity.Apps {
             content_stack.add_named(builder(), page_key);
         }
 
-        // ── Centring wrapper ───────────────────────────────────────────────
+        // Centring wrapper
 
         private Widget centered(Widget widget, int max_width = 600) {
             var scroll = new ScrolledWindow();
@@ -127,9 +127,7 @@ namespace Singularity.Apps {
             return lbl;
         }
 
-        // ═══════════════════════════════════════════════════════════════════
-        // PAGE BUILDERS
-        // ═══════════════════════════════════════════════════════════════════
+        // Page builders
 
         // Controls: layout in ui/pages.vetro; only the segmented control's
         // options are added here (imperative API with no markup equivalent).
@@ -141,12 +139,10 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("controls_page");
         }
 
-        // ── Preference Rows ───────────────────────────────────────────────
+        // Preference Rows: group declared in ui/pages.vetro; rows added here
+        // (SelectionRow/SearchableExpanderRow are not markup-friendly).
         private Widget build_preference_rows() {
-            var box = new Box(Orientation.VERTICAL, 8);
-            box.append(section_title("Preference Rows"));
-
-            var g = new PreferencesGroup(_("All Row Types"));
+            var g = (PreferencesGroup) _pages.get_object("preference_rows_group");
             g.add_row(new ActionRow(_("ActionRow"), _("A simple non-interactive row"), "folder-symbolic"));
             g.add_row(new SwitchRow(_("SwitchRow"), _("Toggle something on or off"), true));
             g.add_row(new SpinRow("SpinRow", "Pick a number", 1, 100, 1, 42));
@@ -168,9 +164,8 @@ namespace Singularity.Apps {
             ser_lbl2.margin_bottom = 6;
             ser.list_box.append(ser_lbl2);
             g.add_row(ser);
-            box.append(g);
 
-            return centered(box);
+            return (Widget) _pages.get_object("preference_rows_page");
         }
 
         // PreferencesGroup: fully declared in ui/pages.vetro.
@@ -178,15 +173,10 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("prefgroup_page");
         }
 
-        // ── PreferencesPage ───────────────────────────────────────────────
+        // PreferencesPage: page scaffold in ui/pages.vetro; groups appended here
+        // (g2 contains a SelectionRow which is not markup-friendly).
         private Widget build_preferences_page() {
-            var outer = new Box(Orientation.VERTICAL, 16);
-            outer.margin_start = 24;
-            outer.margin_end = 24;
-            outer.margin_top = 24;
-            outer.append(section_title("PreferencesPage"));
-
-            var page = new PreferencesPage();
+            var page = (PreferencesPage) _pages.get_object("preferences_page_inner");
 
             var g1 = new PreferencesGroup(_("Section One"));
             g1.add_row(new SwitchRow(_("Enable feature"), null, true));
@@ -198,28 +188,12 @@ namespace Singularity.Apps {
             g2.add_row(new EntryRow("Custom value"));
             page.append_group(g2);
 
-            var scroll = new ScrolledWindow();
-            scroll.hscrollbar_policy = PolicyType.NEVER;
-            scroll.hexpand = true;
-            scroll.vexpand = true;
-            scroll.set_child(page);
-            outer.append(scroll);
-            return outer;
+            return (Widget) _pages.get_object("preferences_page_page");
         }
 
-        // ── PreferencesWindow ─────────────────────────────────────────────
+        // PreferencesWindow: static layout in ui/pages.vetro; button handler here.
         private Widget build_preferences_window_demo() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("PreferencesWindow"));
-
-            var info = new Label(_("PreferencesWindow is a top-level Gtk.Window. Click the button to open it."));
-            info.wrap = true;
-            info.halign = Align.START;
-            box.append(info);
-
-            var btn = new Button.with_label(_("Open PreferencesWindow"));
-            btn.halign = Align.START;
-            btn.add_css_class("suggested-action");
+            var btn = (Button) _pages.get_object("preferences_window_open_btn");
             btn.clicked.connect(() => {
                 var g = new PreferencesGroup(_("Demo group"));
                 g.add_row(new SwitchRow(_("Option A"), null, true));
@@ -229,9 +203,7 @@ namespace Singularity.Apps {
                 var pw = new PreferencesWindow(application, pg);
                 pw.present();
             });
-            box.append(btn);
-
-            return centered(box);
+            return (Widget) _pages.get_object("preferences_window_page");
         }
 
         // Navigation: fully declared in ui/pages.vetro.
@@ -543,29 +515,12 @@ namespace Singularity.Apps {
             return centered(box, 700);
         }
 
-        // ── Toolbar demo ──────────────────────────────────────────────────
+        // ToolBar: static layout in ui/pages.vetro; title set here (set_title()
+        // is the only API, ToolBar has no title construct property).
         private Widget build_toolbar_demo() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("ToolBar"));
-
-            var info = new Label(
-                "ToolBar is used inside Singularity.Widgets.Window as the custom title bar.\n" +
-                "It provides back/forward buttons, a title, and suffix widget slots.\n\n" +
-                "This demo window itself uses a ToolBar look at the top.");
-            info.wrap = true;
-            info.halign = Align.START;
-            box.append(info);
-
-            var _w24 = new Label(_("ToolBar (standalone example):")) ;
-            _w24.halign = Align.START;
-            _w24.margin_top = 12;
-            box.append(_w24);
-            var tb = new ToolBar();
+            var tb = (ToolBar) _pages.get_object("toolbar_demo_bar");
             tb.set_title(_("My Page"));
-            tb.add_css_class("card");
-            box.append(tb);
-
-            return centered(box);
+            return (Widget) _pages.get_object("toolbar_page");
         }
 
         // Keyring test: talks to the Secret Service on the bus via libsecret.
@@ -895,27 +850,9 @@ namespace Singularity.Apps {
             return centered(box);
         }
 
-        // ── Window info ───────────────────────────────────────────────────
+        // Window info: fully declared in ui/pages.vetro.
         private Widget build_window_info() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("Singularity.Widgets.Window"));
-
-            var info = new Label(
-                "Singularity.Widgets.Window is the base window class for all Singularity apps.\n\n" +
-                "It provides:\n" +
-                "  • Custom ToolBar title bar\n" +
-                "  • Rounded corners (settable via GSettings)\n" +
-                "  • Session state persistence (position & size)\n" +
-                "  • Clamp to work area on map\n" +
-                "  • set_content() + header suffix support\n\n" +
-                "This window is itself a Singularity.Widgets.Window."
-            );
-            info.wrap = true;
-            info.halign = Align.START;
-            info.selectable = true;
-            box.append(info);
-
-            return centered(box);
+            return (Widget) _pages.get_object("window_info_page");
         }
     }
 }

@@ -85,3 +85,63 @@ ScrolledWindow(id: "statuspage_page", hscrollbarPolicy: "never", hexpand: true, 
         }
     }
 }
+
+ScrolledWindow(id: "preference_rows_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 8) {
+            Label(label: "Preference Rows", halign: "start", marginBottom: 16).cssClass("title-2")
+            // Rows added imperatively in Vala (SelectionRow/SearchableExpanderRow
+            // are not markup-friendly), so just declare the empty group here.
+            PreferencesGroup(id: "preference_rows_group", title: "All Row Types").translatable("title")
+        }
+    }
+}
+
+ScrolledWindow(id: "preferences_page_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginStart: 24, marginEnd: 24) {
+        Label(label: "PreferencesPage", halign: "start", marginBottom: 16).cssClass("title-2")
+        ScrolledWindow(hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+            // Groups appended in Vala (g2 contains a SelectionRow).
+            PreferencesPage(id: "preferences_page_inner")
+        }
+    }
+}
+
+ScrolledWindow(id: "preferences_window_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "PreferencesWindow", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "PreferencesWindow is a top-level Gtk.Window. Click the button to open it.",
+                  wrap: true, halign: "start").translatable("label")
+            Button(id: "preferences_window_open_btn", label: "Open PreferencesWindow", halign: "start")
+                .translatable("label").cssClass("suggested-action")
+        }
+    }
+}
+
+ScrolledWindow(id: "window_info_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "Singularity.Widgets.Window", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "Singularity.Widgets.Window is the base window class for all Singularity apps.\n\nIt provides:\n  Custom ToolBar title bar\n  Rounded corners (settable via GSettings)\n  Session state persistence (position & size)\n  Clamp to work area on map\n  set_content() + header suffix support\n\nThis window is itself a Singularity.Widgets.Window.",
+                  wrap: true, halign: "start", selectable: true).translatable("label")
+        }
+    }
+}
+
+ScrolledWindow(id: "toolbar_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "ToolBar", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "ToolBar is used inside Singularity.Widgets.Window as the custom title bar.\nIt provides back/forward buttons, a title, and suffix widget slots.\n\nThis demo window itself uses a ToolBar look at the top.",
+                  wrap: true, halign: "start").translatable("label")
+            Label(label: "ToolBar (standalone example):", halign: "start", marginTop: 12).translatable("label")
+            ToolBar(id: "toolbar_demo_bar").cssClass("card")
+        }
+    }
+}
