@@ -286,3 +286,64 @@ ScrolledWindow(id: "color_schemes_page", hscrollbarPolicy: "never", hexpand: tru
         }
     }
 }
+
+ScrolledWindow(id: "visual_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "visual_box", spacing: 24) {
+            Label(label: "Visual / Charts", halign: "start", marginBottom: 16).cssClass("title-2")
+            // Colour-source controls, SparkLine, MiniBar and Chip row are built
+            // in Vala (random data + live colour repaint).
+        }
+    }
+}
+
+ScrolledWindow(id: "hover_controls_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "hover_controls_box", spacing: 16) {
+            Label(label: "HoverControls", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "HoverControls shows a toolbar overlay on mouse hover.",
+                  wrap: true, halign: "start").translatable("label")
+            // HoverControls (set_content + add_control) built in Vala.
+        }
+    }
+}
+
+ScrolledWindow(id: "keyring_test_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "keyring_box", spacing: 16) {
+            Label(label: "Keyring Test", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "Talks to the org.freedesktop.Secret daemon on the session bus. With singularity-keyring running the first call shows the passphrase dialog; subsequent operations succeed silently.",
+                  wrap: true, halign: "start").translatable("label")
+            // Form, button bar and log built in Vala (rows seeded with values,
+            // libsecret operations wired to the buttons).
+        }
+    }
+}
+
+ScrolledWindow(id: "carousel_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "carousel_box", spacing: 16) {
+            Label(label: "Carousel", halign: "start", marginBottom: 16).cssClass("title-2")
+            // Carousel pages + nav buttons built in Vala.
+        }
+    }
+}
+
+// OverlaySearch: inner page content; the OverlaySearch card is added as a
+// Gtk.Overlay child in Vala so it floats above this content.
+ScrolledWindow(id: "overlay_search_content", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "OverlaySearch", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "Click the button: a centered top-anchored card opens with a search entry and list of items. Filtering is on title+subtitle substring.",
+                  wrap: true, halign: "start").translatable("label")
+            Button(id: "overlay_search_btn", label: "Open palette", halign: "start")
+                .translatable("label").cssClass("suggested-action")
+        }
+    }
+}

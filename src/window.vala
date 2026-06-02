@@ -96,37 +96,6 @@ namespace Singularity.Apps {
             content_stack.add_named(builder(), page_key);
         }
 
-        // Centring wrapper
-
-        private Widget centered(Widget widget, int max_width = 600) {
-            var scroll = new ScrolledWindow();
-            scroll.hscrollbar_policy = PolicyType.NEVER;
-            scroll.hexpand = true;
-            scroll.vexpand = true;
-
-            var clamp = new Box(Orientation.VERTICAL, 0);
-            clamp.hexpand = true;
-            clamp.vexpand = true;
-            clamp.halign = Align.FILL;
-            clamp.valign = Align.START;
-            clamp.margin_bottom = 32;
-            clamp.margin_start = 24;
-            clamp.margin_end = 24;
-            clamp.margin_top = 24;
-            clamp.append(widget);
-
-            scroll.set_child(clamp);
-            return scroll;
-        }
-
-        private Widget section_title(string title) {
-            var lbl = new Label(title);
-            lbl.add_css_class("title-2");
-            lbl.halign = Align.START;
-            lbl.margin_bottom = 16;
-            return lbl;
-        }
-
         // Page builders
 
         // Controls: layout in ui/pages.vetro; only the segmented control's
@@ -231,7 +200,8 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("statuspage_page");
         }
 
-        // ── WelcomePage ───────────────────────────────────────────────────
+        // WelcomePage: kept in Vala. WelcomePage.add_action takes a callback
+        // per action, so there is no clean markup equivalent.
         private Widget build_welcome_page() {
             var wp = new WelcomePage();
             wp.app_icon_name = "dev.sinty.demo";
@@ -275,10 +245,10 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("dialogs_page");
         }
 
-        // ── Visual / Charts ───────────────────────────────────────────────
+        // Visual / Charts: title scaffold in ui/pages.vetro; charts, colour
+        // controls and chip row built here (random data + live repaint).
         private Widget build_visual() {
-            var box = new Box(Orientation.VERTICAL, 24);
-            box.append(section_title("Visual / Charts"));
+            var box = (Box) _pages.get_object("visual_box");
 
             var spark = new SparkLine(30);
             spark.set_size_request(300, 60);
@@ -349,7 +319,7 @@ namespace Singularity.Apps {
             chip_row.append(new Chip("Error", "dialog-error-symbolic"));
             box.append(chip_row);
 
-            return centered(box);
+            return (Widget) _pages.get_object("visual_page");
         }
 
         // Chips: layout in ui/pages.vetro; ChipBar populated here (add_chip).
@@ -361,15 +331,10 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("chips_page");
         }
 
-        // ── HoverControls ─────────────────────────────────────────────────
+        // HoverControls: scaffold in ui/pages.vetro; control built here
+        // (set_content + add_control have no markup equivalent).
         private Widget build_hover_controls() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("HoverControls"));
-
-            var info = new Label(_("HoverControls shows a toolbar overlay on mouse hover."));
-            info.wrap = true;
-            info.halign = Align.START;
-            box.append(info);
+            var box = (Box) _pages.get_object("hover_controls_box");
 
             var hc = new HoverControls();
             hc.set_size_request(400, 200);
@@ -395,7 +360,7 @@ namespace Singularity.Apps {
 
             box.append(hc);
 
-            return centered(box, 500);
+            return (Widget) _pages.get_object("hover_controls_page");
         }
 
         // Context Menu: static layout in ui/pages.vetro; menu created on click.
@@ -438,16 +403,7 @@ namespace Singularity.Apps {
         private TextView?      _kr_log    = null;
 
         private Widget build_keyring_test() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("Keyring Test"));
-
-            var hint = new Label(
-                "Talks to the org.freedesktop.Secret daemon on the session bus. "
-              + "With singularity-keyring running the first call shows the "
-              + "passphrase dialog; subsequent operations succeed silently.");
-            hint.wrap = true;
-            hint.halign = Align.START;
-            box.append(hint);
+            var box = (Box) _pages.get_object("keyring_box");
 
             _kr_schema = new Secret.Schema("dev.sinty.demo.test",
                 Secret.SchemaFlags.NONE,
@@ -546,7 +502,7 @@ namespace Singularity.Apps {
                 }
             });
 
-            return centered(box);
+            return (Widget) _pages.get_object("keyring_test_page");
         }
 
         private void kr_log(string line) {
@@ -562,18 +518,11 @@ namespace Singularity.Apps {
         // OverlaySearch: floating spotlight / palette card, added as a
         // Gtk.Overlay child so it floats above the page content.
         private OverlaySearch? _demo_overlay = null;
+        // OverlaySearch: page content in ui/pages.vetro; the floating card is
+        // added as a Gtk.Overlay child here so it floats above the content.
         private Widget build_overlay_search() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("OverlaySearch"));
-            var info = new Label(_("Click the button: a centered top-anchored card opens with a search entry ")
-                               + "and list of items. Filtering is on title+subtitle substring.");
-            info.wrap = true; info.halign = Align.START;
-            box.append(info);
-
-            var btn = new Button.with_label(_("Open palette"));
-            btn.halign = Align.START;
-            btn.add_css_class("suggested-action");
-            box.append(btn);
+            var content = (Widget) _pages.get_object("overlay_search_content");
+            var btn = (Button) _pages.get_object("overlay_search_btn");
 
             _demo_overlay = new OverlaySearch();
             _demo_overlay.placeholder = "Type a command…";
@@ -590,15 +539,14 @@ namespace Singularity.Apps {
             btn.clicked.connect(() => _demo_overlay.open());
 
             var page_overlay = new Gtk.Overlay();
-            page_overlay.set_child(centered(box));
+            page_overlay.set_child(content);
             page_overlay.add_overlay(_demo_overlay);
             return page_overlay;
         }
 
-        // Carousel: paginated slides with dot indicator.
+        // Carousel: scaffold in ui/pages.vetro; slides + nav built here.
         private Widget build_carousel() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("Carousel"));
+            var box = (Box) _pages.get_object("carousel_box");
             var car = new Carousel();
             car.set_size_request(-1, 240);
             string[] hues = { "#E36464", "#64C4E3", "#A2E364", "#E3C264" };
@@ -634,7 +582,7 @@ namespace Singularity.Apps {
             });
             ctrl_row.append(prev); ctrl_row.append(next);
             box.append(ctrl_row);
-            return centered(box, 640);
+            return (Widget) _pages.get_object("carousel_page");
         }
 
         // CircularProgress: scaffold in ui/pages.vetro; rings added here.
