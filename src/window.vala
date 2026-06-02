@@ -211,45 +211,19 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("navigation_page");
         }
 
-        // ── TabContainer ──────────────────────────────────────────────────
+        // TabContainer: scaffold in ui/pages.vetro; tabs added here (add_tab).
         private Widget build_tab_container() {
-            var outer = new Box(Orientation.VERTICAL, 16);
-            outer.margin_start = 24;
-            outer.margin_end = 24;
-            outer.margin_top = 24;
-            outer.append(section_title("TabContainer"));
-
-            var tc = new TabContainer();
-            tc.hexpand = true;
-            tc.vexpand = true;
-
-            var page1 = new Box(Orientation.VERTICAL, 0);
-            page1.halign = Align.CENTER;
-            page1.valign = Align.CENTER;
-            var _w13 = new Label(_("Content of Tab 1")) ;
-            _w13.add_css_class("title-2");
-            page1.append(_w13);
-
-            var page2 = new Box(Orientation.VERTICAL, 0);
-            page2.halign = Align.CENTER;
-            page2.valign = Align.CENTER;
-            var _w14 = new Label(_("Content of Tab 2")) ;
-            _w14.add_css_class("title-2");
-            page2.append(_w14);
-
-            var page3 = new Box(Orientation.VERTICAL, 0);
-            page3.halign = Align.CENTER;
-            page3.valign = Align.CENTER;
-            var _w15 = new Label(_("Content of Tab 3")) ;
-            _w15.add_css_class("title-2");
-            page3.append(_w15);
-
-            tc.add_tab(page1, "Tab 1");
-            tc.add_tab(page2, "Tab 2");
-            tc.add_tab(page3, "Tab 3");
-
-            outer.append(tc);
-            return outer;
+            var tc = (TabContainer) _pages.get_object("tab_container_tc");
+            for (int i = 1; i <= 3; i++) {
+                var page = new Box(Orientation.VERTICAL, 0);
+                page.halign = Align.CENTER;
+                page.valign = Align.CENTER;
+                var lbl = new Label(_("Content of Tab %d").printf(i));
+                lbl.add_css_class("title-2");
+                page.append(lbl);
+                tc.add_tab(page, "Tab %d".printf(i));
+            }
+            return (Widget) _pages.get_object("tab_container_page");
         }
 
         // StatusPage: fully declared in ui/pages.vetro.
@@ -442,27 +416,13 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("context_menu_page");
         }
 
-        // ── Calendar Views ────────────────────────────────────────────────
+        // Calendar Views: scaffold in ui/pages.vetro; CalendarNavPicker inserted here.
         private Widget build_calendar() {
-            var box = new Box(Orientation.VERTICAL, 24);
-            box.append(section_title("Calendar Views"));
-
-            var _w22 = new Label(_("CalendarNavPicker:")) ;
-            _w22.halign = Align.START;
-            box.append(_w22);
+            var box = (Box) _pages.get_object("calendar_box");
+            var label = (Widget) _pages.get_object("calendar_nav_label");
             var nav = new CalendarNavPicker();
-            box.append(nav);
-
-            var _w23 = new Label(_("CalendarMonthView:"));
-            _w23.halign = Align.START;
-            _w23.margin_top = 16;
-            box.append(_w23);
-            var lbl_no_cal = new Label(_("(requires CalendarManager available in shell context)"));
-            lbl_no_cal.halign = Align.START;
-            lbl_no_cal.add_css_class("dim-label");
-            box.append(lbl_no_cal);
-
-            return centered(box, 700);
+            box.insert_child_after(nav, label);
+            return (Widget) _pages.get_object("calendar_page");
         }
 
         // ToolBar: static layout in ui/pages.vetro; title set here (set_title()
@@ -677,13 +637,9 @@ namespace Singularity.Apps {
             return centered(box, 640);
         }
 
-        // CircularProgress: ring chart.
+        // CircularProgress: scaffold in ui/pages.vetro; rings added here.
         private Widget build_circular_progress() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("CircularProgress"));
-
-            var row = new Box(Orientation.HORIZONTAL, 24);
-            row.halign = Align.START;
+            var row = (Box) _pages.get_object("circular_progress_row");
             double[] vals = { 0.25, 0.5, 0.75, 1.0 };
             foreach (var v in vals) {
                 var cp = new CircularProgress(72);
@@ -691,8 +647,7 @@ namespace Singularity.Apps {
                 cp.label    = "%d%%".printf((int)(v * 100));
                 row.append(cp);
             }
-            box.append(row);
-            return centered(box);
+            return (Widget) _pages.get_object("circular_progress_page");
         }
 
         // ConfirmDialog: static layout in ui/pages.vetro; dialog created on click.
@@ -724,21 +679,19 @@ namespace Singularity.Apps {
             return (Widget) _pages.get_object("confirm_row_page");
         }
 
-        // BrowserPill: address-bar style chip.
+        // BrowserPill: scaffold in ui/pages.vetro; pill built here (update_from_uri).
         private Widget build_browser_pill() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("BrowserPill"));
+            var box = (Box) _pages.get_object("browser_pill_box");
             var pill = new BrowserPill();
             pill.update_from_uri("https://example.com/some/path");
             pill.halign = Align.START;
             box.append(pill);
-            return centered(box);
+            return (Widget) _pages.get_object("browser_pill_page");
         }
 
-        // SourceView: GtkSource.View with Singularity defaults.
+        // SourceView: scaffold in ui/pages.vetro; editor built here.
         private Widget build_source_view() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("SourceView"));
+            var box = (Box) _pages.get_object("source_view_box");
             var sv = new SourceView();
             sv.buffer.set_text("// Singularity SourceView\n// Monospace, accent caret, accent selection.\n\nfn main() {\n    println(\"hello\");\n}", -1);
             sv.set_size_request(-1, 240);
@@ -749,13 +702,12 @@ namespace Singularity.Apps {
             scroll.add_css_class("card");
             scroll.set_size_request(-1, 260);
             box.append(scroll);
-            return centered(box, 720);
+            return (Widget) _pages.get_object("source_view_page");
         }
 
-        // TabBar: standalone tab strip driven by a Gtk.Notebook.
+        // TabBar: scaffold in ui/pages.vetro; strip + notebook built here.
         private Widget build_tab_bar() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("TabBar"));
+            var box = (Box) _pages.get_object("tab_bar_box");
             var nb = new Notebook();
             string[] names = { "Home", "Inbox", "Send" };
             foreach (var n in names) {
@@ -766,14 +718,11 @@ namespace Singularity.Apps {
             var tb = new TabBar(nb);
             box.append(tb);
             box.append(nb);
-            return centered(box);
+            return (Widget) _pages.get_object("tab_bar_page");
         }
 
-        // ColorSchemePreview + ColorSchemeRow: terminal/editor color scheme picker.
+        // ColorSchemes: group scaffold in ui/pages.vetro; ColorSchemeRow added here.
         private Widget build_color_schemes() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("Color Schemes"));
-
             var themes = new Gee.ArrayList<ColorTheme>();
             themes.add(new ColorTheme("dracula", "Dracula",  "#282a36", "#f8f8f2",
                 {"#000000","#ff5555","#50fa7b","#f1fa8c","#bd93f9","#ff79c6","#8be9fd","#bbbbbb"}));
@@ -782,10 +731,9 @@ namespace Singularity.Apps {
             themes.add(new ColorTheme("onedark", "One Dark","#282c34", "#abb2bf",
                 {"#000000","#e06c75","#98c379","#e5c07b","#61afef","#c678dd","#56b6c2","#abb2bf"}));
 
-            var g = new PreferencesGroup(_("Editor theme"));
+            var g = (PreferencesGroup) _pages.get_object("color_schemes_group");
             g.add_row(new ColorSchemeRow("Scheme", themes, "nord"));
-            box.append(g);
-            return centered(box);
+            return (Widget) _pages.get_object("color_schemes_page");
         }
 
         // Window info: fully declared in ui/pages.vetro.

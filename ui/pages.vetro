@@ -214,3 +214,75 @@ ScrolledWindow(id: "chips_page", hscrollbarPolicy: "never", hexpand: true, vexpa
         }
     }
 }
+
+// TabContainer: title scaffold in markup; tabs added in Vala (add_tab).
+VBox(id: "tab_container_page", spacing: 16, marginTop: 24, marginStart: 24, marginEnd: 24) {
+    Label(label: "TabContainer", halign: "start", marginBottom: 16).cssClass("title-2")
+    TabContainer(id: "tab_container_tc", hexpand: true, vexpand: true)
+}
+
+ScrolledWindow(id: "calendar_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "calendar_box", spacing: 24) {
+            Label(label: "Calendar Views", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(id: "calendar_nav_label", label: "CalendarNavPicker:", halign: "start").translatable("label")
+            // CalendarNavPicker inserted after its label in Vala.
+            Label(label: "CalendarMonthView:", halign: "start", marginTop: 16).translatable("label")
+            Label(label: "(requires CalendarManager available in shell context)",
+                  halign: "start").translatable("label").cssClass("dim-label")
+        }
+    }
+}
+
+ScrolledWindow(id: "browser_pill_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "browser_pill_box", spacing: 16) {
+            Label(label: "BrowserPill", halign: "start", marginBottom: 16).cssClass("title-2")
+            // BrowserPill appended in Vala (needs update_from_uri).
+        }
+    }
+}
+
+ScrolledWindow(id: "source_view_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "source_view_box", spacing: 16) {
+            Label(label: "SourceView", halign: "start", marginBottom: 16).cssClass("title-2")
+            // SourceView + scroller appended in Vala.
+        }
+    }
+}
+
+ScrolledWindow(id: "tab_bar_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(id: "tab_bar_box", spacing: 16) {
+            Label(label: "TabBar", halign: "start", marginBottom: 16).cssClass("title-2")
+            // TabBar + Notebook appended in Vala.
+        }
+    }
+}
+
+ScrolledWindow(id: "circular_progress_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "CircularProgress", halign: "start", marginBottom: 16).cssClass("title-2")
+            // Rings added in Vala (constructed with a diameter and fraction).
+            HBox(id: "circular_progress_row", spacing: 24, halign: "start")
+        }
+    }
+}
+
+ScrolledWindow(id: "color_schemes_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "Color Schemes", halign: "start", marginBottom: 16).cssClass("title-2")
+            // ColorSchemeRow added in Vala (needs a theme list).
+            PreferencesGroup(id: "color_schemes_group", title: "Editor theme").translatable("title")
+        }
+    }
+}
