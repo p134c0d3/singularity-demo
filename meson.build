@@ -22,10 +22,13 @@ if not meson.is_subproject() and libsingularity_dep.type_name() == 'internal'
   add_project_arguments(['--vapidir=' + libsingularity_vapi_dir], language: 'vala')
 endif
 
+subdir('ui')
+
 resources = gnome.compile_resources(
   'singularity-demo-resources',
   'resources/dev.sinty.demo.gresource.xml',
-  source_dir: meson.current_source_dir()
+  source_dir: [meson.current_source_dir(), meson.current_build_dir()],
+  dependencies: main_ui
 )
 
 sources = files(

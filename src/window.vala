@@ -4,10 +4,13 @@ using Singularity.Widgets;
 
 namespace Singularity.Apps {
 
+    [GtkTemplate(ui = "/dev/sinty/demo/ui/main.ui")]
     public class DemoWindow : Singularity.Widgets.Window {
 
-        private Stack content_stack;
-        private ListBox nav_list;
+        // The window skeleton (sidebar, nav list, content stack) is declared
+        // in ui/main.vetro and provided here as template children.
+        [GtkChild] private unowned Stack content_stack;
+        [GtkChild] private unowned ListBox nav_list;
 
         // Groups: name -> (icon, builder delegate)
         private struct Group {
@@ -20,32 +23,7 @@ namespace Singularity.Apps {
             set_title(_("libsingularity Demo"));
             set_default_size(1000, 680);
 
-            var root = new Box(Orientation.HORIZONTAL, 0);
-
-            var sidebar = new AppSidebar(220);
-            nav_list = new ListBox();
-            nav_list.selection_mode = SelectionMode.SINGLE;
-            nav_list.add_css_class("navigation-sidebar");
-            nav_list.vexpand = true;
-            sidebar.box.append(nav_list);
-
-            var content_area = new Box(Orientation.VERTICAL, 0);
-            content_area.hexpand = true;
-            content_area.vexpand = true;
-            content_stack = new Stack();
-            content_stack.transition_type = StackTransitionType.CROSSFADE;
-            content_stack.hexpand = true;
-            content_stack.vexpand = true;
-            content_area.append(content_stack);
-
-            var separator = new Separator(Orientation.VERTICAL);
-            root.append(sidebar);
-            root.append(separator);
-            root.append(content_area);
-
-            set_content(root);
-
-            // ── Register all widget groups ─────────────────────────────────
+            // Register all widget groups
             add_group("Welcome",           "go-home-symbolic",                   build_welcome_page);
             add_group("Controls",          "input-mouse-symbolic",               build_controls);
             add_group("Preferences Rows",  "preferences-system-symbolic",        build_preference_rows);

@@ -1,0 +1,15 @@
+Template(class: "SingularityAppsDemoWindow", parent: "SingularityWidgetsWindow") {
+    HBox(id: "demo_ui_root", spacing: 0) {
+        AppSidebar(id: "sidebar", sidebarWidth: 220) {
+            ListBox(id: "nav_list", vexpand: true, selectionMode: "single")
+                .cssClass("navigation-sidebar")
+        }
+
+        Separator(orientation: "vertical")
+
+        VBox(id: "content_area", hexpand: true, vexpand: true) {
+            Stack(id: "content_stack", hexpand: true, vexpand: true)
+                .transitionType("crossfade")
+        }
+    }
+}
