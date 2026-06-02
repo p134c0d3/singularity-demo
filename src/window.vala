@@ -12,6 +12,10 @@ namespace Singularity.Apps {
         [GtkChild] private unowned Stack content_stack;
         [GtkChild] private unowned ListBox nav_list;
 
+        // Static page layouts declared in ui/pages.vetro; behaviour (dynamic
+        // population, signals) is wired in the matching build_* method.
+        private Gtk.Builder _pages;
+
         // Groups: name -> (icon, builder delegate)
         private struct Group {
             public string name;
@@ -22,6 +26,8 @@ namespace Singularity.Apps {
             Object(application: app);
             set_title(_("libsingularity Demo"));
             set_default_size(1000, 680);
+
+            _pages = new Gtk.Builder.from_resource("/dev/sinty/demo/ui/pages.ui");
 
             // Register all widget groups
             add_group("Welcome",           "go-home-symbolic",                   build_welcome_page);
@@ -125,85 +131,14 @@ namespace Singularity.Apps {
         // PAGE BUILDERS
         // ═══════════════════════════════════════════════════════════════════
 
-        // ── Controls ──────────────────────────────────────────────────────
+        // Controls: layout in ui/pages.vetro; only the segmented control's
+        // options are added here (imperative API with no markup equivalent).
         private Widget build_controls() {
-            var box = new Box(Orientation.VERTICAL, 24);
-
-            box.append(section_title("Controls"));
-
-            // IconButton
-            var row1 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_ib = new Label(_("IconButton:"));
-            lbl_ib.halign = Align.START;
-            lbl_ib.width_chars = 18;
-            row1.append(lbl_ib);
-            row1.append(new IconButton("folder-symbolic"));
-            box.append(row1);
-
-            // CircularButton
-            var row2 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_cb = new Label(_("CircularButton:"));
-            lbl_cb.halign = Align.START;
-            lbl_cb.width_chars = 18;
-            row2.append(lbl_cb);
-            row2.append(new CircularButton("starred-symbolic"));
-            box.append(row2);
-
-            // CloseButton
-            var row3 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_cl = new Label(_("CloseButton:"));
-            lbl_cl.halign = Align.START;
-            lbl_cl.width_chars = 18;
-            row3.append(lbl_cl);
-            row3.append(new CloseButton());
-            box.append(row3);
-
-            // ColorPickerButton
-            var row4 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_cp = new Label(_("ColorPickerButton:"));
-            lbl_cp.halign = Align.START;
-            lbl_cp.width_chars = 18;
-            row4.append(lbl_cp);
-            var cpb = new ColorPickerButton();
-            row4.append(cpb);
-            box.append(row4);
-
-            // QuickSettingTile
-            var row5 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_qs = new Label(_("QuickSettingTile:"));
-            lbl_qs.halign = Align.START;
-            lbl_qs.width_chars = 18;
-            row5.append(lbl_qs);
-            var tile = new QuickSettingTile("Wi-Fi", "network-wireless-symbolic");
-            row5.append(tile);
-            box.append(row5);
-
-            // SearchEntry
-            var row6 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_se = new Label(_("SearchEntry:"));
-            lbl_se.halign = Align.START;
-            lbl_se.width_chars = 18;
-            row6.append(lbl_se);
-            var se = new Singularity.Widgets.SearchEntry();
-            se.placeholder_text = _("Search…");
-            se.hexpand = true;
-            row6.append(se);
-            box.append(row6);
-
-            // SegmentedControl
-            var row7 = new Box(Orientation.HORIZONTAL, 12);
-            var lbl_sg = new Label(_("SegmentedControl:"));
-            lbl_sg.halign = Align.START;
-            lbl_sg.width_chars = 18;
-            row7.append(lbl_sg);
-            var seg = new SegmentedControl();
+            var seg = (SegmentedControl) _pages.get_object("controls_segment");
             seg.add_option("list", "List");
             seg.add_option("grid", "Grid");
             seg.add_option("columns", "Columns");
-            row7.append(seg);
-            box.append(row7);
-
-            return centered(box);
+            return (Widget) _pages.get_object("controls_page");
         }
 
         // ── Preference Rows ───────────────────────────────────────────────

@@ -28,7 +28,7 @@ resources = gnome.compile_resources(
   'singularity-demo-resources',
   'resources/dev.sinty.demo.gresource.xml',
   source_dir: [meson.current_source_dir(), meson.current_build_dir()],
-  dependencies: main_ui
+  dependencies: [main_ui, pages_ui]
 )
 
 sources = files(

@@ -8,3 +8,12 @@ main_ui = custom_target(
   install: false,
   build_by_default: true
 )
+
+pages_ui = custom_target(
+  'pages_ui_gen',
+  input: 'pages.vetro',
+  output: 'pages.ui',
+  command: [vetro, '--in', '@INPUT@', '--out', '@OUTPUT@'],
+  install: false,
+  build_by_default: true
+)

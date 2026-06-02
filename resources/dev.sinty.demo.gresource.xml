@@ -2,5 +2,6 @@
 <gresources>
   <gresource prefix="/dev/sinty/demo">
     <file preprocess="xml-stripblanks">ui/main.ui</file>
+    <file preprocess="xml-stripblanks">ui/pages.ui</file>
   </gresource>
 </gresources>

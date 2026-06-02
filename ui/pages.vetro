@@ -1,0 +1,41 @@
+// Demo pages declared in vetro. Each top-level object has an id; window.vala
+// loads them via Gtk.Builder, places them in the content stack, and wires any
+// interactive/dynamic bits (segment options, etc.) by fetching ids.
+
+ScrolledWindow(id: "controls_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, vexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 24) {
+            Label(label: "Controls", halign: "start").cssClass("title-2")
+
+            HBox(spacing: 12) {
+                Label(label: "IconButton:", halign: "start", widthChars: 18).translatable("label")
+                IconButton(icon: "folder-symbolic")
+            }
+            HBox(spacing: 12) {
+                Label(label: "CircularButton:", halign: "start", widthChars: 18).translatable("label")
+                CircularButton(icon: "starred-symbolic")
+            }
+            HBox(spacing: 12) {
+                Label(label: "CloseButton:", halign: "start", widthChars: 18).translatable("label")
+                CloseButton(icon: "window-close-symbolic")
+            }
+            HBox(spacing: 12) {
+                Label(label: "ColorPickerButton:", halign: "start", widthChars: 18).translatable("label")
+                ColorPickerButton()
+            }
+            HBox(spacing: 12) {
+                Label(label: "QuickSettingTile:", halign: "start", widthChars: 18).translatable("label")
+                QuickSettingTile(title: "Wi-Fi", iconName: "network-wireless-symbolic")
+            }
+            HBox(spacing: 12) {
+                Label(label: "SearchEntry:", halign: "start", widthChars: 18).translatable("label")
+                SingularityWidgetsSearchEntry(id: "controls_search", placeholderText: "Search…", hexpand: true)
+            }
+            HBox(spacing: 12) {
+                Label(label: "SegmentedControl:", halign: "start", widthChars: 18).translatable("label")
+                SegmentedControl(id: "controls_segment")
+            }
+        }
+    }
+}
