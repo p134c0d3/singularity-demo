@@ -145,3 +145,72 @@ ScrolledWindow(id: "toolbar_page", hscrollbarPolicy: "never", hexpand: true, vex
         }
     }
 }
+
+ScrolledWindow(id: "dialogs_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "Dialogs", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "AppDialog is a lightweight modal window. Click below to open one.",
+                  wrap: true, halign: "start").translatable("label")
+            Button(id: "dialogs_open_btn", label: "Open AppDialog", halign: "start")
+                .translatable("label").cssClass("suggested-action")
+            Label(label: "ShellDialog is for shell-layer overlays (requires LayerShell context).",
+                  wrap: true, halign: "start", marginTop: 12).translatable("label")
+        }
+    }
+}
+
+ScrolledWindow(id: "confirm_dialog_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "ConfirmDialog", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "ConfirmDialog: title + icon + description + primary/secondary actions.",
+                  wrap: true, halign: "start").translatable("label")
+            Button(id: "confirm_dialog_open_btn", label: "Open ConfirmDialog", halign: "start")
+                .translatable("label").cssClass("suggested-action")
+        }
+    }
+}
+
+ScrolledWindow(id: "confirm_row_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "ConfirmRow", halign: "start", marginBottom: 16).cssClass("title-2")
+            // ConfirmRow added imperatively in Vala (constructor-arg based).
+            PreferencesGroup(id: "confirm_row_group", title: "Danger zone").translatable("title")
+        }
+    }
+}
+
+ScrolledWindow(id: "context_menu_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "ContextMenu", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "Right-click the button (or click it) to show a ContextMenu.",
+                  wrap: true, halign: "start").translatable("label")
+            Button(id: "context_menu_btn", label: "Show Context Menu", halign: "start").translatable("label")
+        }
+    }
+}
+
+ScrolledWindow(id: "chips_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "Chips & ChipBar", halign: "start", marginBottom: 16).cssClass("title-2")
+            Label(label: "Chip (standalone):", halign: "start").translatable("label")
+            HBox(spacing: 8) {
+                Chip(chipId: "active", chipLabel: "Active")
+                Chip(chipId: "pending", chipLabel: "Pending")
+                Chip(chipId: "done", chipLabel: "Done")
+            }
+            Label(label: "ChipBar:", halign: "start", marginTop: 16).translatable("label")
+            // Chips added imperatively in Vala (ChipBar.add_chip).
+            ChipBar(id: "chips_chipbar", hexpand: true)
+        }
+    }
+}

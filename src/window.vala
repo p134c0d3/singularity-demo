@@ -282,19 +282,9 @@ namespace Singularity.Apps {
             return wp;
         }
 
-        // ── Dialogs ───────────────────────────────────────────────────────
+        // Dialogs: static layout in ui/pages.vetro; button handler here.
         private Widget build_dialogs() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("Dialogs"));
-
-            var info = new Label(_("AppDialog is a lightweight modal window. Click below to open one."));
-            info.wrap = true;
-            info.halign = Align.START;
-            box.append(info);
-
-            var btn = new Button.with_label(_("Open AppDialog"));
-            btn.halign = Align.START;
-            btn.add_css_class("suggested-action");
+            var btn = (Button) _pages.get_object("dialogs_open_btn");
             btn.clicked.connect(() => {
                 var dlg = new AppDialog(application, true);
                 dlg.set_title(_("Sample Dialog"));
@@ -308,16 +298,7 @@ namespace Singularity.Apps {
                 dlg.content_box.append(lbl);
                 dlg.present();
             });
-            box.append(btn);
-
-            // ShellDialog info
-            var info2 = new Label(_("ShellDialog is for shell-layer overlays (requires LayerShell context)."));
-            info2.wrap = true;
-            info2.halign = Align.START;
-            info2.margin_top = 12;
-            box.append(info2);
-
-            return centered(box);
+            return (Widget) _pages.get_object("dialogs_page");
         }
 
         // ── Visual / Charts ───────────────────────────────────────────────
@@ -397,32 +378,13 @@ namespace Singularity.Apps {
             return centered(box);
         }
 
-        // ── Chips ─────────────────────────────────────────────────────────
+        // Chips: layout in ui/pages.vetro; ChipBar populated here (add_chip).
         private Widget build_chips() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("Chips & ChipBar"));
-
-            var _w19 = new Label(_("Chip (standalone):"));
-            _w19.halign = Align.START;
-            box.append(_w19);
-            var row = new Box(Orientation.HORIZONTAL, 8);
-            row.append(new Chip("Active", "emblem-ok-symbolic"));
-            row.append(new Chip("Pending", "emblem-synchronizing-symbolic"));
-            row.append(new Chip("Done", "emblem-default-symbolic"));
-            box.append(row);
-
-            var lbl_cb2 = new Label(_("ChipBar:"));
-            lbl_cb2.halign = Align.START;
-            lbl_cb2.margin_top = 16;
-            box.append(lbl_cb2);
-            var cb = new ChipBar();
+            var cb = (ChipBar) _pages.get_object("chips_chipbar");
             cb.add_chip("alpha", "Alpha");
             cb.add_chip("beta", "Beta");
             cb.add_chip("gamma", "Gamma");
-            cb.hexpand = true;
-            box.append(cb);
-
-            return centered(box);
+            return (Widget) _pages.get_object("chips_page");
         }
 
         // ── HoverControls ─────────────────────────────────────────────────
@@ -462,22 +424,12 @@ namespace Singularity.Apps {
             return centered(box, 500);
         }
 
-        // ── Context Menu ──────────────────────────────────────────────────
-
-        // Store menus as fields to keep them alive past popup()
+        // Context Menu: static layout in ui/pages.vetro; menu created on click.
+        // Stored as a field to keep it alive past popup().
         private ContextMenu? _demo_ctx_menu = null;
 
         private Widget build_context_menu() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("ContextMenu"));
-
-            var info = new Label(_("Right-click the button (or click it) to show a ContextMenu."));
-            info.wrap = true;
-            info.halign = Align.START;
-            box.append(info);
-
-            var btn = new Button.with_label(_("Show Context Menu"));
-            btn.halign = Align.START;
+            var btn = (Button) _pages.get_object("context_menu_btn");
             btn.clicked.connect(() => {
                 _demo_ctx_menu = new ContextMenu(btn);
                 _demo_ctx_menu.add_item("New File",   "document-new-symbolic",     () => {});
@@ -487,9 +439,7 @@ namespace Singularity.Apps {
                 _demo_ctx_menu.closed.connect(() => { _demo_ctx_menu.unparent(); _demo_ctx_menu = null; });
                 _demo_ctx_menu.popup();
             });
-            box.append(btn);
-
-            return centered(box);
+            return (Widget) _pages.get_object("context_menu_page");
         }
 
         // ── Calendar Views ────────────────────────────────────────────────
@@ -745,17 +695,9 @@ namespace Singularity.Apps {
             return centered(box);
         }
 
-        // ConfirmDialog: title + icon + description + primary/secondary actions.
+        // ConfirmDialog: static layout in ui/pages.vetro; dialog created on click.
         private Widget build_confirm_dialog() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("ConfirmDialog"));
-            var info = new Label(_("ConfirmDialog: title + icon + description + primary/secondary actions."));
-            info.wrap = true; info.halign = Align.START;
-            box.append(info);
-
-            var btn = new Button.with_label(_("Open ConfirmDialog"));
-            btn.halign = Align.START;
-            btn.add_css_class("suggested-action");
+            var btn = (Button) _pages.get_object("confirm_dialog_open_btn");
             btn.clicked.connect(() => {
                 var d = new ConfirmDialog(application,
                     "Delete this file?",
@@ -771,19 +713,15 @@ namespace Singularity.Apps {
                 });
                 d.present();
             });
-            box.append(btn);
-            return centered(box);
+            return (Widget) _pages.get_object("confirm_dialog_page");
         }
 
-        // ConfirmRow: inline _("are you sure") inside a PreferencesGroup.
+        // ConfirmRow: group scaffold in ui/pages.vetro; row added here.
         private Widget build_confirm_row() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("ConfirmRow"));
-            var g = new PreferencesGroup(_("Danger zone"));
+            var g = (PreferencesGroup) _pages.get_object("confirm_row_group");
             var cr = new ConfirmRow("Reset settings", "Click then confirm to wipe everything", "edit-clear-symbolic");
             g.add_row(cr);
-            box.append(g);
-            return centered(box);
+            return (Widget) _pages.get_object("confirm_row_page");
         }
 
         // BrowserPill: address-bar style chip.
