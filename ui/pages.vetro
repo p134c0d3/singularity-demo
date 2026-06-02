@@ -39,3 +39,49 @@ ScrolledWindow(id: "controls_page", hscrollbarPolicy: "never", hexpand: true, ve
         }
     }
 }
+
+ScrolledWindow(id: "prefgroup_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "PreferencesGroup", halign: "start").cssClass("title-2")
+
+            PreferencesGroup(title: "Group with header suffix") {
+                Button(iconName: "list-add-symbolic").cssClass("flat").asChildType("header-suffix")
+                ActionRow(title: "Item one", subtitle: "subtitle here").translatable("title", "subtitle")
+                SwitchRow(title: "Item two").translatable("title")
+            }
+
+            PreferencesGroup(title: "Group with description",
+                             description: "Optional subtitle below the title") {
+                EntryRow(title: "Name")
+                EntryRow(title: "Value")
+            }
+        }
+    }
+}
+
+ScrolledWindow(id: "navigation_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 16) {
+            Label(label: "Navigation", halign: "start").cssClass("title-2")
+            Label(label: "SidebarSectionLabel:", halign: "start").translatable("label")
+            SidebarSectionLabel(text: "Section Header")
+            Label(label: "MenuRow:", halign: "start", marginTop: 12).translatable("label")
+            MenuRow(labelText: "Open folder", iconName: "folder-symbolic").cssClass("card")
+        }
+    }
+}
+
+ScrolledWindow(id: "statuspage_page", hscrollbarPolicy: "never", hexpand: true, vexpand: true) {
+    VBox(hexpand: true, valign: "start",
+         marginTop: 24, marginBottom: 32, marginStart: 24, marginEnd: 24) {
+        VBox(spacing: 24) {
+            Label(label: "StatusPage", halign: "start").cssClass("title-2")
+            StatusPage(iconName: "folder-symbolic", title: "No Files Found",
+                       description: "Try a different search or create a new file.")
+                .translatable("title", "description")
+        }
+    }
+}

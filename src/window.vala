@@ -173,25 +173,9 @@ namespace Singularity.Apps {
             return centered(box);
         }
 
-        // ── PreferencesGroup ──────────────────────────────────────────────
+        // PreferencesGroup: fully declared in ui/pages.vetro.
         private Widget build_preferences_group() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title(_("PreferencesGroup")));
-
-            var g1 = new PreferencesGroup(_("Group with header suffix"));
-            var suffix_btn = new Button.from_icon_name("list-add-symbolic");
-            suffix_btn.add_css_class("flat");
-            g1.add_header_suffix(suffix_btn);
-            g1.add_row(new ActionRow(_("Item one"), _("subtitle here")));
-            g1.add_row(new SwitchRow(_("Item two"), null, false));
-            box.append(g1);
-
-            var g2 = new PreferencesGroup(_("Group with description"), _("Optional subtitle below the title"));
-            g2.add_row(new EntryRow("Name"));
-            g2.add_row(new EntryRow("Value"));
-            box.append(g2);
-
-            return centered(box);
+            return (Widget) _pages.get_object("prefgroup_page");
         }
 
         // ── PreferencesPage ───────────────────────────────────────────────
@@ -250,25 +234,9 @@ namespace Singularity.Apps {
             return centered(box);
         }
 
-        // ── Navigation ────────────────────────────────────────────────────
+        // Navigation: fully declared in ui/pages.vetro.
         private Widget build_navigation() {
-            var box = new Box(Orientation.VERTICAL, 16);
-            box.append(section_title("Navigation"));
-
-            var lbl_ssl = new Label(_("SidebarSectionLabel:"));
-            lbl_ssl.halign = Align.START;
-            box.append(lbl_ssl);
-            box.append(new SidebarSectionLabel("Section Header"));
-
-            var lbl_mr = new Label(_("MenuRow:"));
-            lbl_mr.halign = Align.START;
-            lbl_mr.margin_top = 12;
-            box.append(lbl_mr);
-            var menu_row = new MenuRow("Open folder", "folder-symbolic");
-            menu_row.add_css_class("card");
-            box.append(menu_row);
-
-            return centered(box);
+            return (Widget) _pages.get_object("navigation_page");
         }
 
         // ── TabContainer ──────────────────────────────────────────────────
@@ -312,18 +280,9 @@ namespace Singularity.Apps {
             return outer;
         }
 
-        // ── StatusPage ────────────────────────────────────────────────────
+        // StatusPage: fully declared in ui/pages.vetro.
         private Widget build_status_page() {
-            var box = new Box(Orientation.VERTICAL, 24);
-            box.append(section_title("StatusPage"));
-
-            var sp = new StatusPage();
-            sp.icon_name = "folder-symbolic";
-            sp.title = _("No Files Found");
-            sp.description = "Try a different search or create a new file.";
-            box.append(sp);
-
-            return centered(box);
+            return (Widget) _pages.get_object("statuspage_page");
         }
 
         // ── WelcomePage ───────────────────────────────────────────────────
